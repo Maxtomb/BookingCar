@@ -3,11 +3,25 @@
 {% block title %}{{ todo.name }}{% endblock %}
 
 {% block content %}
-  <h1>{{ todo.carName }}</h1>
-  <h1>{{ todo.carNumberPlate }}</h1>
+  <p>车主称呼: {{ todo.carOwnerName }}</p>
+  <p>行程路线: {{ todo.routePoint }}</p>
+  <p>车牌: {{ todo.car.carNumberPlate }}</p>
+  <p>车型: {{ todo.car.carName }}</p>
+  <p>车身颜色: {{ todo.car.carColor }}</p>
+  <p>座位数量: {{ todo.car.carSeatsCount }}</p>
+  <ul class="th">
+    <li>顾客称呼</li>
+    <li>顾客电话</li>
+    <li>等车地点</li>
+  </ul>
+  {% for customerObj in todo.customer %}
+  <ul>
+    <li>{{ customerObj.customerName }}</li>
+    <li>{{ customerObj.customerPhoneNumber }}</li>
+    <li>{{ customerObj.customerLocation }}</li>
+  </ul>
+  {% endfor %}
 
-  <h1>{{ todo.routePoint }}</h1>
-  <p>{{ todo.description }}</p>
   <p><em>Created On: </i> {{ todo.created_on.toDateString() }}</p>
   <p><i>Last Updated On: </i> {{ todo.updated_on.toDateString() }}</p>
   <p><a href="/">Back to List</a></p>

@@ -1,14 +1,13 @@
 {% extends 'layout.html' %}
 
-{% block title %}Todo Tasks{% endblock %}
+{% block title %}创建一个行程{% endblock %}
 
 {% block content %}
-  <h1>Todo List</h1>
-  <p>You have <strong>{{ todos.length }}</strong> Todo Items!</p>
-  <p><a href="/todo/new">Create a ToDo</a></p>
+  <p>现在已经有 <strong>{{ todos.length }}</strong>车辆 准备出发</p>
+  <p><a href="/todo/new">创建一次行程</a></p>
 
   <ul class="th">
-    <li>顾客称呼</li>
+    <li>车主称呼</li>
     <li>车辆品牌</li>
     <li>座位数量</li>
     <li>操作</li>
@@ -18,11 +17,10 @@
       <li> <strong>{{ todo.carOwnerName }}</strong></li>
       <li> <strong>{{ todo.car.carName }}</strong></li>
       <li> <strong>{{ todo.car.carSeatsCount }}</strong></li>
-      
       <li> 
-        <a href="/todo/{{ todo._id.toString() }}">Show</a>
-        <a href="/todo/edit/{{ todo._id.toString() }}">Edit</a>
-        <a href="/todo/delete/{{ todo._id.toString() }}">Delete</a>
+        <a href="/todo/{{ todo._id.toString() }}">显示详情</a>
+        <a href="/todo/edit/{{ todo._id.toString() }}">现在预约</a>
+        <!-- <a href="/todo/delete/{{ todo._id.toString() }}">Delete</a> -->
       </li>
   </ul>
   {% endfor %}

@@ -6,11 +6,16 @@
   <h1>创建一个车主信息</h1>
   <p>创建一个车主信息</p>
   <form action="/todo/create" method="post">
-    <p><input type="text" placeholder="车主姓名" name="CarOwnerName"></p>
-    <p><input type="text" placeholder="车牌(车牌尾号)" name="CarNumberPlate"></p>
-    <p><input type="text" placeholder="车辆名称(例:标致508)" name="CarName"></p>
-    <p><input type="text" placeholder="车辆颜色" name="CarColor"></p>
-    <p><input type="text" placeholder="车辆空余位置" name="CarSeatsCount"></p>
+  <p>ste:{{session.loginid}}</p>
+
+    {% if !session.loginid %}
+       <p><input type="text" placeholder="车主姓名" name="CarOwnerName"></p>
+       <p><input type="text" placeholder="车牌(车牌尾号)" name="CarNumberPlate"></p>
+       <p><input type="text" placeholder="车辆名称(例:标致508)" name="CarName"></p>
+       <p><input type="text" placeholder="车辆颜色" name="CarColor"></p>
+       <p><input type="text" placeholder="车辆空余位置" name="CarSeatsCount"></p>
+    {% endif %}
+   
     <p><input type="text" placeholder="途径地点" name="RoutePoint"></p>
     <p><input type="text" placeholder="手机" name="MobilePhone"></p>
     <p><input type="text" placeholder="备注" name="description"></p>

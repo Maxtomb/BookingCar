@@ -18,7 +18,8 @@ exports.list = function *() {
  * Form for creating new todo item.
  */
 exports.add = function *() {
-  this.body = yield render('new');
+  var ss = this.session;
+  this.body = yield render('new',{session: ss});
 };
 
 /**
@@ -63,14 +64,20 @@ exports.create = function *() {
     carOwnerName: input.CarOwnerName,
     routePoint: input.RoutePoint,
     mobilePhone: input.MobilePhone,
+    setoffTime: input.SetoffTime,
+    setoffLocation: {
+      city: input.SetoffCity,
+      address: input.SetoffAddress
+    },
     car:{
       carNumberPlate: input.CarNumberPlate,
       carName: input.CarName,
       carColor: input.CarColor,
       carSeatsCount: input.CarSeatsCount
     },
-    customer:{},
+    customer:[],
     description: input.description,
+    isStandardUser: false,
     created_on: d,
     updated_on: d
   });
@@ -84,22 +91,14 @@ exports.update = function *() {
   var input = yield parse(this);
   console.log(input);
   yield todos.updateById(input.id, {
-    carOwnerName: input.CarOwnerName,
-    routePoint: input.RoutePoint,
-    mobilePhone: input.MobilePhone,
-    car:{
-      carNumberPlate: input.CarNumberPlate,
-      carName: input.CarName,
-      carColor: input.CarColor,
-      carSeatsCount: input.CarSeatsCount
-    },
-    customer:[{
-      customerPhoneNumber: input.CustomerPhoneNumber,
-      customerLocation: input.CustomerLocation
-    }],
-    description: input.description,
-    created_on: new Date(input.created_on),
-    updated_on: new Date()});
+    $addToSet:{
+      customer:{
+        customerName: input.CustomerName,
+        customerPhoneNumber: input.CustomerPhoneNumber,
+        customerLocation: input.CustomerLocation
+      }
+    }
+  });
   this.redirect('/');
 };
 
