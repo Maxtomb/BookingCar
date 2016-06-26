@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block title %}Show Booked Seats{% endblock %}
+
+{% block content %}
+  <h1>Seats List</h1>
+  <p><a href="/carOwner/create">发布一次行程</a></p>
+  <ul id="carOwner">
+    {% for seat in carOwner.car.seats %}
+      <li>
+        <strong>{{ seat.name }}</strong> ||
+        <strong>{{ seat.isAvailable }}</strong>||
+        <a href="/todo/{{ todo._id.toString() }}">book</a> ||
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

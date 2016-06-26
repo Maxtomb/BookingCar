@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block title %}Todo Tasks{% endblock %}
+
+{% block content %}
+  <h1>Todo List</h1>
+  <p>You have <strong>{{ todos.length }}</strong> Todo Items!</p>
+  <p><a href="/todo/new">Create a ToDo</a></p>
+
+  <ul class="th">
+    <li>顾客称呼</li>
+    <li>车辆品牌</li>
+    <li>座位数量</li>
+    <li>操作</li>
+  </ul>
+  {% for todo in todos %}
+  <ul id="todos">
+      <li> <strong>{{ todo.carOwnerName }}</strong></li>
+      <li> <strong>{{ todo.car.carName }}</strong></li>
+      <li> <strong>{{ todo.car.carSeatsCount }}</strong></li>
+      
+      <li> 
+        <a href="/todo/{{ todo._id.toString() }}">Show</a>
+        <a href="/todo/edit/{{ todo._id.toString() }}">Edit</a>
+        <a href="/todo/delete/{{ todo._id.toString() }}">Delete</a>
+      </li>
+  </ul>
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block title %}Todo Tasks{% endblock %}
+
+{% block content %}
+  <h1>Edit Todo Item</h1>
+  <form action="/todo/update" method="post">
+    <p><input type="hidden" value="{{ todo._id.toString() }}" name="id"></p>
+    <p><input type="hidden" value="{{ todo.carOwnerName }}" name="CarOwnerName"></p>
+    <p><input type="hidden" value="{{ todo.routePoint }}" name="RoutePoint"></p>
+	<p><input type="hidden" value="{{ todo.mobilePhone }}" name="MobilePhone"></p>
+    <p><input type="hidden" value="{{ todo.car.carName }}" name="CarName"></p>
+    <p><input type="hidden" value="{{ todo.car.carColor }}" name="CarColor"></p>
+    <p><input type="hidden" value="{{ todo.car.carName }}" name="CarName"></p>
+    <p><input type="hidden" value="{{ todo.car.carSeatsCount }}" name="CarSeatsCount"></p>
+    <p><input type="hidden" value="{{ todo.description }}" name="description"></p>
+    <p><input type="text" placeholder="乘客手机号" value="{{ todo.customerPhoneNumber }}" name="CustomerPhoneNumber"></p>
+    <p><input type="text" placeholder="等车位置" value="{{ todo.customerLocation }}" name="CustomerLocation"></p>
+   <!-- <p><input type="hidden" value="{{ todo.created_on.toString() }}" name="created_on"></p> -->
+   <!-- <p><input type="submit" value="Update"></p> -->
+   <p><input type="submit" value="预约"></p> 
+  </form>
+{% endblock %}
