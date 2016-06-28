@@ -25,28 +25,18 @@ textarea {
   padding: 15px;
   font-size: 0.8em;
 }
+input[type=date],
+textarea {
+  border: 1px solid #eee;
+  border-top-color: #ddd;
+  border-left-color: #ddd;
+  border-radius: 2px;
+  padding: 15px;
+  font-size: 0.8em;
+}
 input[type=text] {
   width: 500px;
 }
-ul {
-  list-style: none;
-  padding: 0px;
-  margin: 0px;
-  width: 590px;
-  height: 20px;
-  line-height: 20px;
-  border: 1px solid #9c0;
-  border-top: 0px;
-  font-size: 12px;
-}
-ul li {
-  display: block;
-  width: 20%;
-  float: left;
-  text-indent: 2em;
-}
-.th {
-  background: #f1fade;
-  font-weight: bold;
-  border-top: 1px;
+input[type=date] {
+  width: 500px;
 }

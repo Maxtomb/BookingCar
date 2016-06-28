@@ -5,23 +5,42 @@
 {% block content %}
   <p>现在已经有 <strong>{{ todos.length }}</strong>车辆 准备出发</p>
   <p><a href="/todo/new">创建一次行程</a></p>
-
-  <ul class="th">
-    <li>车主称呼</li>
-    <li>车辆品牌</li>
-    <li>座位数量</li>
-    <li>操作</li>
+  
+  <div data-role="page" id="pageone">
+  <div data-role="content">
+  <h2>所有行程</h2>
+  <ul data-role="listview" data-inset="true" data-filter="true">
+    {% for todo in todos %}
+      <div data-role="collapsible">
+      <h1>{{ todo.car.carName }}, {{ todo.car.carSeatsCount - todo.customer.length }}</h1>
+      <p>
+          途经: {{ todo.routePoint }}
+          <a href="/todo/{{ todo._id.toString() }}"> 查看详情</a>
+      </p>
+      </div>
+    {% endfor %}
+      
   </ul>
-  {% for todo in todos %}
-  <ul id="todos">
-      <li> <strong>{{ todo.carOwnerName }}</strong></li>
+  </div>
+</div> 
+
+<!--   <ul class="th">
+    <li>车辆品牌</li>
+    <Li>途经地点</Li>
+    <li>剩余座位</li>
+    <li>操作</li>
+  </ul> -->
+
+  <!-- <ul id="todos">
+      
       <li> <strong>{{ todo.car.carName }}</strong></li>
-      <li> <strong>{{ todo.car.carSeatsCount }}</strong></li>
+      <li> <strong>{{ todo.routePoint }}</strong></li>
+      <li> <strong>{{ todo.car.carSeatsCount - todo.customer.length }}</strong></li>
       <li> 
         <a href="/todo/{{ todo._id.toString() }}">显示详情</a>
-        <a href="/todo/edit/{{ todo._id.toString() }}">现在预约</a>
+        <a href="/todo/edit/{{ todo._id.toString() }}">现在预约</a> -->
         <!-- <a href="/todo/delete/{{ todo._id.toString() }}">Delete</a> -->
-      </li>
-  </ul>
-  {% endfor %}
+    <!--   </li>
+  </ul> -->
+  
 {% endblock %}
