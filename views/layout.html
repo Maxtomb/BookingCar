@@ -2,17 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <title>{% block title %}Todo App{% endblock %}</title>
   <link rel="stylesheet" href="/layout.css">
   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
   <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
   <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
-</head>
-<body>
-<section id="content">
-  {% block content %}
-    <p>Missing content!</p>
-  {% endblock %}
-</section>
+  <style type="text/css">
+  	#content {
+	    padding: 0;
+	    position: absolute !important; 
+	    top : 40px !important;  
+	    right : 0; 
+	    bottom : 40px !important;  
+	    left : 0 !important;     
+	}
+
+  </style>
+ </head>
+<body class="ui-mobile-viewport ui-overlay-a">
+<div data-role="page" style="max-height:440px; min-height:440px;">
+	<div data-role="header" data-position="fixed"> 
+		<a href="#defaultpanel" data-role="button" data-icon="bars" data-iconpos="notext">菜单</a>
+        <h1>拼车顾客管理</h1>
+        {% block retrunButton %}
+
+      	{% endblock %}
+    </div>
+    <div data-role="content" id="content">
+	    
+			  {% block content %}
+			    <p>Missing content!</p>
+			  {% endblock %}
+	
+	</div> 
+    <div data-role="panel" id="defaultpanel" data-theme="b"> 
+       
+      <div class="panel-content"> 
+
+      	<ul data-role="listview" data-icon="false">
+      		<li><a href="#demo-links" data-rel="close"> 关闭窗口</a></li>
+		    <li><a href="#">显示所有行程</a></li>
+		</ul>
+        
+      </div> 
+                    
+    </div>
+    <div data-role="footer" data-position="fixed"> 
+		<p>Created By: 小黑工作室</p>
+    </div>
+</div>
+	
+
+	
 </body>
 </html>

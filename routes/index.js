@@ -99,7 +99,7 @@ exports.update = function *() {
       }
     }
   });
-  this.redirect('/');
+  this.redirect('/todo/'+input.id);
 };
 
 exports.updateCarOwnerJsonObject = function *() {
