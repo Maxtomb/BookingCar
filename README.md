@@ -1,12 +1,11 @@
 # BookingCar
 私家车预约座位管理系统
-
 To run this example, first launch a local [MonoDB](https://www.mongodb.org/) instance.
 
-mongod
+    mongod
 
-You can review the demo from http://172.106.32.23:3000/
+	Then run the following commands in the root directory of this project.
 
-
-
+	    npm install
+		    npm start
 
