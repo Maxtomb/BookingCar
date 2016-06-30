@@ -1,11 +1,9 @@
 # BookingCar
 私家车预约座位管理系统
-To run this example, first launch a local [MonoDB](https://www.mongodb.org/) instance.
 
-    mongod
+1.使用本系统前先在本地打开mongodb
+  mongod
+2.请安装iojs 直接执行 目录下 index.js
 
-	Then run the following commands in the root directory of this project.
-
-	    npm install
-		    npm start
+3.系统事例: http://172.106.32.23:3000/
 
