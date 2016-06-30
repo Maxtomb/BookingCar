@@ -10,7 +10,7 @@
   <p>现在已经有 <strong>{{ todos.length }}</strong>车辆 准备出发</p> 
    
   <h2>所有行程</h2>
-  <ul data-role="listview" data-inset="true" data-filter="true">
+  <ul data-role="collapsible-set" data-inset="true" data-filter="true" style="margin:0;padding:0">
     {% for todo in todos %}
         <div data-role="collapsible">
           <h1>{{ todo.car.carName }}, {{ todo.car.carSeatsCount - todo.customer.length }}</h1>
