@@ -13,13 +13,16 @@
       <div class="ui-block-a"><span><b>车主称呼:</b> {{ todo.carOwnerName }} </span></div>
       <div class="ui-block-b"><span><b>车牌尾号:</b> {{ todo.car.carNumberPlate }}</span></div>
   </div>
-   <div class="ui-grid-b" >
-      <div class="ui-block-a"><span><b>车型:</b> {{ todo.car.carName }}</span></div>
+  <div class="ui-grid-b" >
+      <div class="ui-block-a"><span><b>车    型:</b> {{ todo.car.carName }}</span></div>
       <div class="ui-block-b"><span><b>车身颜色:</b> {{ todo.car.carColor }}</span></div>
+  </div></br>
+  <div class="ui-grid-b" >
+      <div class="ui-block-d"><span><b>电    话:</b> {{ todo.mobilePhone}}</span></div>
+      <div class="ui-block-b"><span><b>剩余座位:</b>{{ todo.car.carSeatsCount - todo.customer.length }}</span></div>
   </div>
-  
   <p><b>行程路线:</b> {{ todo.routePoint }}</p>
-  <p><b>剩余座位:</b> {{ todo.car.carSeatsCount - todo.customer.length }}</p>
+  <p></p>
   {% if todo.car.carSeatsCount - todo.customer.length > 0 %}
   	<p><a href="/todo/edit/{{ todo._id.toString() }}" data-role="button">预 定</a></p> 
   {% endif %}
