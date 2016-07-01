@@ -16,8 +16,8 @@
    <input type="text" value="{{ todo.car.carName}}" placeholder="车辆名称(例:标致508)" name="CarName" />
    <input type="text" value="{{ todo.car.carColor}}" placeholder="车辆颜色" name="CarColor" />
    <input type="text" value="{{ todo.mobilePhone}}" placeholder="手机" name="MobilePhone" />
-   <input type="date" value="{{ todo.setoffDate}}" placeholder="出发日期" name="SetoffDate" />
-   <input type="time" value="{{ todo.setoffTime}}" placeholder="出发时间" name="SetoffTime" />
+   <input type="text" placeholder="出发日期" onfocus="this.type='date';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffDate"/>
+    <input type="text" placeholder="出发时间" onfocus="this.type='time';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffTime" />
    <input type="text" value="{{ todo.destination}}" placeholder="终点" name="Destination" />
    <textarea cols="40" rows="5" name="RoutePoint">{{ todo.routePoint}}</textarea>
    <input type="text" value="{{ todo.car.carSeatsCount}}" placeholder="空余座位" name="CarSeatsCount" value="4"/>
