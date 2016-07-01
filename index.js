@@ -19,6 +19,7 @@ app.use(serve('./public'));
 
 // Route middleware
 app.use(route.get('/', routes.list));
+// app.use(route.get('/offline.manifest',route.offlineCache));
 app.use(function* (next){
   yield next;
   if ('/favicon.ico' == this.path) return;
@@ -30,9 +31,11 @@ app.use(route.get('/todo/new', routes.add));
 app.use(route.get('/todo/:id', routes.show));
 app.use(route.get('/todo/delete/:id', routes.remove));
 app.use(route.get('/todo/edit/:id', routes.edit));
+app.use(route.get('/todo/order/:id', routes.order));
 app.use(route.post('/todo/create', routes.create));
 app.use(route.post('/todo/update', routes.update));
-
+app.use(route.post('/todo/updateOrder', routes.updateOrder));
+app.use(route.get('/locate', routes.locate));
 
 
 // Create HTTP Server

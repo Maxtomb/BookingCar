@@ -1,0 +1,8 @@
+ CACHE MANIFEST
+
+ CACHE:
+# plain files to cache
+/models/todos.js
+/public/layout.css
+/public/layout.styl
+/views/edit.html

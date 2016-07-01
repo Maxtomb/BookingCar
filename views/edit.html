@@ -1,24 +1,27 @@
 {% extends 'layout.html' %}
 
-{% block title %}Todo Tasks{% endblock %}
+{% block title %}行程信息修改{% endblock %}
+
+{% block retrunButton %}
+  <!-- <a href="/" data-role="button" data-icon="back"  class="ui-btn-right"></a>  -->
+  <a href="/" data-role="button" data-icon="back" data-iconpos="notext">返回</a>
+{% endblock %}
 
 {% block content %}
-  <h1>请填写您的联系信息</h1>
+  <p><font color="#FF0000">注意: 修改行程会取消所有订单,修改行程前请先通知乘客</font></p>
   <form action="/todo/update" method="post">
-    <p><input type="hidden" value="{{ todo._id.toString() }}" name="id"></p>
-    <!-- <p><input type="hidden" value="{{ todo.carOwnerName }}" name="CarOwnerName"></p>
-    <p><input type="hidden" value="{{ todo.routePoint }}" name="RoutePoint"></p>
-	  <p><input type="hidden" value="{{ todo.mobilePhone }}" name="MobilePhone"></p>
-    <p><input type="hidden" value="{{ todo.car.carName }}" name="CarName"></p>
-    <p><input type="hidden" value="{{ todo.car.carColor }}" name="CarColor"></p>
-    <p><input type="hidden" value="{{ todo.car.carName }}" name="CarName"></p>
-    <p><input type="hidden" value="{{ todo.car.carSeatsCount }}" name="CarSeatsCount"></p>
-    <p><input type="hidden" value="{{ todo.description }}" name="description"></p> -->
-    <p><input type="text" placeholder="称呼"  name="CustomerName"></p>
-    <p><input type="text" placeholder="乘客手机号" name="CustomerPhoneNumber"></p>
-    <p><input type="text" placeholder="等车位置" name="CustomerLocation"></p>
-   <!-- <p><input type="hidden" value="{{ todo.created_on.toString() }}" name="created_on"></p> -->
-   <!-- <p><input type="submit" value="Update"></p> -->
-   <p><input type="submit" value="预约"></p> 
+   <input type="hidden" value="{{ todo._id.toString() }}" name="id">
+   <input type="text" value="{{ todo.carOwnerName}}" placeholder="车主姓名" name="CarOwnerName" />
+   <input type="text" value="{{ todo.car.carNumberPlate}}" placeholder="车牌(车牌尾号)" name="CarNumberPlate" />
+   <input type="text" value="{{ todo.car.carName}}" placeholder="车辆名称(例:标致508)" name="CarName" />
+   <input type="text" value="{{ todo.car.carColor}}" placeholder="车辆颜色" name="CarColor" />
+   <input type="text" value="{{ todo.mobilePhone}}" placeholder="手机" name="MobilePhone" />
+   <input type="date" value="{{ todo.setoffDate}}" placeholder="出发日期" name="SetoffDate" />
+   <input type="time" value="{{ todo.setoffTime}}" placeholder="出发时间" name="SetoffTime" />
+   <input type="text" value="{{ todo.destination}}" placeholder="终点" name="Destination" />
+   <textarea cols="40" rows="5" name="RoutePoint">{{ todo.routePoint}}</textarea>
+   <input type="text" value="{{ todo.car.carSeatsCount}}" placeholder="空余座位" name="CarSeatsCount" value="4"/>
+   <input type="text" value="{{ todo.description}}" placeholder="备注" name="description" />
+   <input type="submit" value="修改" />
   </form>
 {% endblock %}

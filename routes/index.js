@@ -2,8 +2,14 @@ var parse  = require('co-body');
 var render = require('../lib/views');
 var todos  = require('../models/todos');
 
-
 // Route definitions
+
+
+
+exports.locate = function *(){
+  this.body = yield render('locate');
+};
+
 
 /**
  * Item List.
@@ -34,6 +40,15 @@ exports.edit = function *(id) {
   this.body = yield render('edit', {todo: result});
 };
 
+exports.order = function *(id) {
+  var result = yield todos.findById(id);
+  console.log(JSON.stringify(result));
+  if (!result) {
+    this.throw(404, 'invalid todo id');
+  }
+  this.body = yield render('order', {todo: result});
+};
+
 /**
  * Show details of a todo item.
  */
@@ -49,7 +64,12 @@ exports.show = function *(id) {
  * Delete a todo item
  */
 exports.remove = function *(id) {
-  yield todos.remove({"_id": id});
+  var input = yield parse.form(this);
+  console.log(input);
+  var pwd = input.pass;
+  if(pwd == "abc"){
+    yield todos.remove({"_id": id});
+  }
   this.redirect('/');
 };
 
@@ -64,7 +84,40 @@ exports.create = function *() {
     carOwnerName: input.CarOwnerName,
     routePoint: input.RoutePoint,
     mobilePhone: input.MobilePhone,
+    setoffDate: input.SetoffDate,
     setoffTime: input.SetoffTime,
+    destination: input.Destination,
+    setoffLocation: {
+      city: input.SetoffCity,
+      address: input.SetoffAddress
+    },
+    car:{
+      carNumberPlate: input.CarNumberPlate,
+      carName: input.CarName,
+      carColor: input.CarColor,
+      carSeatsCount: input.CarSeatsCount
+    },
+    customer:[],
+    description: input.description,
+    isStandardUser: false,
+    created_on: d,
+    updated_on: d
+  });
+  this.redirect('/');
+};
+
+
+exports.update = function *() {
+  var input = yield parse(this);
+  console.log(input);
+  var d = new Date();
+  yield todos.updateById(input.id, {
+    carOwnerName: input.CarOwnerName,
+    routePoint: input.RoutePoint,
+    mobilePhone: input.MobilePhone,
+    setoffDate: input.SetoffDate,
+    setoffTime: input.SetoffTime,
+    destination: input.Destination,
     setoffLocation: {
       city: input.SetoffCity,
       address: input.SetoffAddress
@@ -87,7 +140,7 @@ exports.create = function *() {
 /**
  * Update an existing todo item.
  */
-exports.update = function *() {
+exports.updateOrder = function *() {
   var input = yield parse(this);
   console.log(input);
   yield todos.updateById(input.id, {
@@ -113,7 +166,11 @@ exports.updateCarOwnerJsonObject = function *() {
   this.redirect('/');
 };
 
-
+exports.offlineCache = function *(req, res){
+  console.log("is cacheing");
+  res.header("Content-Type", "text/cache-manifest");
+  res.end("CACHE MANIFEST");
+};
 
 
 

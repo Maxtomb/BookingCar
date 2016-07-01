@@ -13,10 +13,22 @@
   <ul data-role="collapsible-set" data-inset="true" data-filter="true" style="margin:0;padding:0">
     {% for todo in todos %}
         <div data-role="collapsible">
-          <h1>{{ todo.car.carName }}, {{ todo.car.carSeatsCount - todo.customer.length }}</h1>
+          <h1>{{ todo.car.carName }}, 出发时间: {{ todo.setoffTime }}, 剩余座位:{{ todo.car.carSeatsCount - todo.customer.length }}</h1>
            <p>
               途经: {{ todo.routePoint }}</br>
               <a href="/todo/{{ todo._id.toString() }}"> 查看详情</a>
+              <a href="/todo/edit/{{ todo._id.toString() }}"> 修改行程</a>
+              <a href="#popupdelete" data-rel="popup" data-position-to="window" data-transition="pop"> 删除行程</a>
+              <div data-role="popup" id="popupdelete" data-theme="a" class="ui-corner-all">
+                  <form action="/todo/delete/{{ todo._id.toString()}}">
+                      <div style="padding:10px 20px;">
+                          <h3>请输入管理员密码</h3>
+                          <label for="pw" class="ui-hidden-accessible">Password:</label>
+                            <input type="password" name="pass" id="pw" value="" placeholder="请输入管理员密码" data-theme="a">
+                          <button type="submit">删除</button>
+                      </div>
+                  </form>
+              </div>
            </p>
         </div>
     {% endfor %}
