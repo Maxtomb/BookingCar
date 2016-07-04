@@ -19,7 +19,6 @@ app.use(serve('./public'));
 
 // Route middleware
 app.use(route.get('/', routes.list));
-app.use(route.get('/#pageone2', routes.listCarOwner));
 // app.use(route.get('/offline.manifest',route.offlineCache));
 app.use(function* (next){
   yield next;
@@ -28,21 +27,14 @@ app.use(function* (next){
   this.session.views = ++n;
   this.session.loginid = null;
 });
-app.use(route.get('/bookingcar/new', routes.add));
-app.use(route.get('/bookingcar/:id', routes.show));
-app.use(route.get('/bookingcar/delete/:id', routes.remove));
-app.use(route.get('/bookingcar/edit/:id', routes.edit));
-app.use(route.get('/bookingcar/order/:id', routes.order));
-app.use(route.post('/bookingcar/create', routes.create));
-
-app.use(route.post('bookingcar/newowner', routes.addOwner));
-app.use(route.post('bookingcar/createCarOwner', routes.createCarOwner));
-app.use(route.post('bookingcar/listCarOwner', routes.listCarOwner));
-app.use(route.post('bookingcar/updateCarOwner', routes.updateCarOwner));
-app.use(route.post('bookingcar/deleteCarOwner', routes.updateCarOwner));
-
-app.use(route.post('/bookingcar/update', routes.update));
-app.use(route.post('/bookingcar/updateOrder', routes.updateOrder));
+app.use(route.get('/todo/new', routes.add));
+app.use(route.get('/todo/:id', routes.show));
+app.use(route.get('/todo/delete/:id', routes.remove));
+app.use(route.get('/todo/edit/:id', routes.edit));
+app.use(route.get('/todo/order/:id', routes.order));
+app.use(route.post('/todo/create', routes.create));
+app.use(route.post('/todo/update', routes.update));
+app.use(route.post('/todo/updateOrder', routes.updateOrder));
 app.use(route.get('/locate', routes.locate));
 
 

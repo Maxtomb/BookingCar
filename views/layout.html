@@ -1,229 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<title>{% block title %}{% endblock %}</title>
-	<link rel="stylesheet" href="/layout.css">
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
-	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>{% block title %}拼车顾客管理{% endblock %}</title>
+  <link rel="stylesheet" href="/layout.css">
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+  <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+  {% block script %}
 
+  {% endblock %}
+  
 </head>
-<body class="ui-mobile-viewport">
+<body class="ui-mobile-viewport ui-overlay-a">
+<div data-role="page">
+	<div data-role="header" data-position="fixed" style="position: absolute;padding:0;margin:0"> 
+		<a href="#defaultpanel" data-role="button" data-icon="bars" data-iconpos="notext">菜单</a>
+        <h1>拼车顾客管理</h1>
+        {% block retrunButton %}
 
-	<div data-role="page" id="listroutepage">
-		<div data-role="header" data-position="fixed" style="position: absolute;padding:0;margin:0"> 
-			<a href="#defaultpanel" data-role="button" data-icon="bars" data-iconpos="notext">菜单</a>
-			<h1>显示所有行程</h1>
-			<a href="＃newroute" data-role="button" data-icon="plus" data-iconpos="notext">创建</a>
-		</div>
+      	{% endblock %}
+    </div>
+    <div data-role="content" id="content" style="overflow: scroll;">
+	    
+			  {% block content %}
+			    <p>Missing content!</p>
+			  {% endblock %}
+	
+	</div> 
+    <div data-role="panel" id="defaultpanel" data-theme="b"> 
+       
+      <div class="panel-content"> 
 
-		<div data-role="content" id="content" style="overflow:scroll;">
-			<p>现在已经有 <strong>{{ bookingcar.length }}</strong>车辆 准备出发</p> 
-			<h2>所有行程</h2>
-			<ul data-role="collapsible-set" data-inset="true" data-filter="true" style="margin:0;padding:0">
-				{% for bookcar in bookingcar %}
-				<div data-role="collapsible">
-					<h1>{{ bookcar.carOwnerName }}, 出发时间: {{ bookcar.setoffTime }}, 剩余座位:{{ bookcar.car.carSeatsCount - bookcar.customer.length }}</h1>
-					<p>
-						途经: {{ bookcar.routePoint }}</br>
-						<a href="/bookingcar/{{ bookcar._id.toString() }}"> 查看详情</a>
-						<a href="/bookingcar/edit/{{ bookcar._id.toString() }}"> 修改行程</a>
-						<a href="#popupdelete" data-rel="popup" data-position-to="window" data-transition="pop"> 删除行程</a>
-						<div data-role="popup" id="popupdelete" data-theme="a" class="ui-corner-all">
-							    <form action="/bookingcar/delete/{{ bookcar._id.toString()}}">
-								        <div style="padding:10px 20px;">
-									            <h3>请输入管理员密码</h3>
-									            <label for="pw" class="ui-hidden-accessible">Password:</label>
-									              <input type="password" name="pass" id="pw" value="" placeholder="请输入管理员密码" data-theme="a">
-									            <button type="submit">删除</button>
-								        </div>
-							    </form>
-						</div>
-					</p>
-				</div>
-				{% endfor %}
-			</ul>
-		</div> 
-		{% include 'snippets/panel.html' %}
-		{% include 'snippets/footer.html' %}
-	</div>
+      	<ul data-role="listview" data-icon="false">
+      		<li><a href="#demo-links" data-rel="close"> 关闭窗口</a></li>
+		    <li><a href="#">关于我们</a></li>
+		</ul>
+        
+      </div> 
+                    
+    </div>
+    <div data-role="footer" data-position="fixed" style="position: absolute;padding:0;margin:0"> 
+		<p>Created By: 小黑工作室</p>
+    </div>
+</div>
+	
 
-	<div data-role="page" id="newroute">
-		<div data-role="header" data-position="fixed" style="position: absolute;padding:0;margin:0"> 
-			<a href="#defaultpanel" data-role="button" data-icon="bars" data-iconpos="notext">菜单</a>
-			<h1>创建一个行程</h1>
-		</div>
-
-		<div data-role="content" id="content" style="overflow:scroll;">
-			<form action="/bookingcar/create" method="post">
-				{% if !session.loginid %}
-				<input type="text" placeholder="车主姓名" name="CarOwnerName" />
-				<input type="text" placeholder="车牌(车牌尾号)" name="CarNumberPlate" />
-				<input type="text" placeholder="车辆名称(例:标致508)" name="CarName" />
-				<input type="text" placeholder="车辆颜色" name="CarColor" />
-				{% endif %}
-
-				<input type="text" placeholder="手机" name="MobilePhone" />
-				<input type="text" placeholder="出发日期" onfocus="this.type='date';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffDate"/>
-				<input type="text" placeholder="出发时间" onfocus="this.type='time';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffTime" />
-				<input type="text" placeholder="终点" name="Destination" />
-				<textarea cols="40" placeholder="途径地点 例如: 软件园二期文思海辉大厦,数字山谷大厦(从一期西门入的第一个十字路口),软件园一期汉王大门出,信息路(7街),信息路(6街),信息路(5街),信息路(4街),信息路(3街),上地东里小区门口,朱房路(G7)" rows="8" name="RoutePoint"></textarea>
-				<input type="text" placeholder="空余座位" name="CarSeatsCount" value="4"/>
-				<input type="text" placeholder="备注" name="description" />
-				<input type="submit" value="创建" />
-			</form>
-		</div> 
-		{% include 'snippets/panel.html' %}
-		{% include 'snippets/footer.html' %}
-	</div>
-
-
-	<div data-role="page" id="editroute">
-		<div data-role="header" data-position="fixed" style="position: absolute;padding:0;margin:0"> 
-			<a href="#defaultpanel" data-role="button" data-icon="bars" data-iconpos="notext">菜单</a>
-			<h1>修改一个行程</h1>
-		</div>
-
-		<div data-role="content" id="content" style="overflow:scroll;">
-			<p><font color="#FF0000">注意: 修改行程会取消所有订单,修改行程前请先通知乘客</font></p>
-			<form action="/bookingcar/update" method="post">
-				<input type="hidden" value="{{ bookingcar._id.toString() }}" name="id">
-				<input type="text" value="{{ bookingcar.carOwnerName}}" placeholder="车主姓名" name="CarOwnerName" />
-				<input type="text" value="{{ bookingcar.car.carNumberPlate}}" placeholder="车牌(车牌尾号)" name="CarNumberPlate" />
-				<input type="text" value="{{ bookingcar.car.carName}}" placeholder="车辆名称(例:标致508)" name="CarName" />
-				<input type="text" value="{{ bookingcar.car.carColor}}" placeholder="车辆颜色" name="CarColor" />
-				<input type="text" value="{{ bookingcar.mobilePhone}}" placeholder="手机" name="MobilePhone" />
-				<input type="text" value="{{ bookingcar.setoffDate}}" placeholder="出发日期" onfocus="this.type='date';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffDate"/>
-				<input type="text" value="{{ bookingcar.setoffTime}}" placeholder="出发时间" onfocus="this.type='time';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffTime" />
-				<input type="text" value="{{ bookingcar.destination}}" placeholder="终点" name="Destination" />
-				<textarea cols="40" rows="5" name="RoutePoint">{{ bookingcar.routePoint}}</textarea>
-				<input type="text" value="{{ bookingcar.car.carSeatsCount}}" placeholder="空余座位" name="CarSeatsCount" value="4"/>
-				<input type="text" value="{{ bookingcar.description}}" placeholder="备注" name="description" />
-				<input type="submit" value="修改" />
-			</form>
-		</div> 
-		{% include 'snippets/panel.html' %}
-		{% include 'snippets/footer.html' %}
-	</div>
-
-	<div data-role="page" id="showroute">
-		<div data-role="header" data-position="fixed" style="position: absolute;padding:0;margin:0"> 
-			<a href="#defaultpanel" data-role="button" data-icon="bars" data-iconpos="notext">菜单</a>
-			<h1>行程详细信息</h1>
-		</div>
-
-		<div data-role="content" id="content" style="overflow:scroll;">
-			<div class="ui-grid-a" >
-				<div class="ui-block-a"><span><b>车主称呼:</b> {{ bookingcar.carOwnerName }} </span></div>
-				<div class="ui-block-b"><span><b>车牌尾号:</b> {{ bookingcar.car.carNumberPlate }}</span></div>
-				<div class="ui-block-a"><span><b>车型:</b> {{ bookingcar.car.carName }}</span></div>
-				<div class="ui-block-b"><span><b>车身颜色:</b> {{ bookingcar.car.carColor }}</span></div>
-				<div class="ui-block-a"><span><b>电话:</b> {{ bookingcar.mobilePhone}}</span></div>
-				<div class="ui-block-b"><span><b>剩余座位:</b>{{ bookingcar.car.carSeatsCount - bookingcar.customer.length }}</span></div>
-				<div class="ui-block-a"><span><b>出行日期:</b> {{ bookingcar.setoffDate }}</span></div>
-				<div class="ui-block-b"><span><b>终点:</b> {{ bookingcar.destination }}</span></div>
-			</div>
-			<ul data-role="collapsible-set" data-inset="true" data-filter="true" style="margin:0;padding:0">
-
-				<div data-role="collapsible">
-					<h1>行程详情</h1>
-					<p>
-						<p><b>出发时间:</b> {{ bookingcar.setoffTime }}</p>
-						<p><b>行程路线:</b></br>
-							{{ bookingcar.routePoint | replace(',','</br>','g')|safe}}
-						</p>
-						<p><b>备注:</b> {{ bookingcar.description}}</p>
-					</p>
-				</div>
-
-			</ul>
-			{% if bookingcar.car.carSeatsCount - bookingcar.customer.length > 0 %}
-			<p><a href="/bookingcar/order/{{ bookingcar._id.toString() }}" data-role="button">预 定</a></p> 
-			{% endif %}
-			<table data-role="table" id="table-column-toggle" data-mode="columntoggle" border="10" class="ui-responsive table-stroke">
-				     <thead>
-					       <tr>
-						         <th data-priority="1">顾客称呼</th>
-						         <th data-priority="2">顾客电话</th>
-						         <th data-priority="3">等车地点</th>
-					       </tr>
-				     </thead>
-				     <tbody>
-					{% for customerObj in bookingcar.customer %}
-					       <tr>
-						         <td>{{ customerObj.customerName }}</td>
-						         <td>{{ customerObj.customerPhoneNumber }}</td>
-						         <td>{{ customerObj.customerLocation }}</td>
-					       </tr>
-					{% endfor %}
-				     </tbody>
-			   </table>
-			<p><em>Created On: </i> {{ bookingcar.created_on.toDateString() }}</p>
-			<p><i>Last Updated On: </i> {{ bookingcar.updated_on.toDateString() }}</p>
-		</div> 
-		{% include 'snippets/panel.html' %}
-		{% include 'snippets/footer.html' %}
-	</div>
-
-
-
-
-
-	<div data-role="page" id="listownerpage">
-
-		<div data-role="header" data-position="fixed" style="position: absolute;padding:0;margin:0"> 
-			<a href="#defaultpanel" data-role="button" data-icon="bars" data-iconpos="notext">菜单</a>
-			<h1>Test</h1>
-			<a href="#newownerpage" data-role="button" data-icon="plus" data-iconpos="notext">创建</a>
-		</div>
-
-		<div data-role="content" style="overflow:scroll;">
-			<p>现在已经有 <strong>{{ bookingcar.length }}</strong>车主已注册</p> 
-
-			<h2>所有车主</h2>
-			<ul data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="车主查询..." data-inset="true">
-				<ul data-role="collapsible-set" data-inset="true" data-filter="true"  style="margin:0;padding:0">
-					{% for bookcar in bookingcar %}
-					<div data-role="collapsible">
-						<h1>{{ bookcar.carOwnerName }}, 出发时间: {{ bookcar.setoffTime }}, 剩余座位:{{ bookcar.car.carSeatsCount - bookcar.customer.length }}</h1>
-						<p>
-							途经: {{ bookcar.routePoint }}</br>
-							<a href="/bookingcar/{{ bookcar._id.toString() }}"> 查看详情</a>
-							<a href="/bookingcar/edit/{{ bookcar._id.toString() }}"> 修改车主信息</a>
-						</p>
-					</div>
-					{% endfor %}
-				</ul>
-			</ul>
-		</div> 
-		{% include 'snippets/panel.html' %}
-		{% include 'snippets/footer.html' %}
-	</div>
-
-	<div data-role="page" id="newownerpage">
-
-		<div data-role="header" data-position="fixed" style="position: absolute;padding:0;margin:0"> 
-			<a href="#defaultpanel" data-role="button" data-icon="bars" data-iconpos="notext">菜单</a>
-			<h1>Test</h1>
-		</div>
-
-		<div data-role="content" style="overflow:scroll;">
-			<form action="/bookingcar/createCarOwner" method="post">
-				<input type="text" placeholder="车主姓名" name="CarOwnerName" />
-				<input type="text" placeholder="车牌(车牌尾号)" name="CarNumberPlate" />
-				<input type="text" placeholder="车辆名称(例:标致508)" name="CarName" />
-				<input type="text" placeholder="车辆颜色" name="CarColor" />
-				<input type="text" placeholder="手机" name="MobilePhone" />
-				<input type="submit" value="创建" />
-			</form>
-		</div> 
-		{% include 'snippets/panel.html' %}
-		{% include 'snippets/footer.html' %}
-	</div>
-
-
+	
 </body>
 </html>

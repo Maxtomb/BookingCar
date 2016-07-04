@@ -1,14 +1,71 @@
 {% extends 'layout.html' %}
 
-{% block title %}显示行程详细信息{% endblock %}
-{% block pagename %}显示行程详细信息{% endblock %}
+{% block title %}{{ todo.name }}{% endblock %}
 
 {% block retrunButton %}
 	<!-- <a href="/" data-role="button" data-icon="back"  class="ui-btn-right"></a>  -->
 	<a href="/" data-role="button" data-icon="back" data-iconpos="notext">返回</a>
 {% endblock %}
 
-{% block route_content %}
-  
+{% block content %}
 
+  <div class="ui-grid-b" >
+      <div class="ui-block-a"><span><b>车主称呼:</b> {{ todo.carOwnerName }} </span></div>
+      <div class="ui-block-b"><span><b>车牌尾号:</b> {{ todo.car.carNumberPlate }}</span></div>
+  </div>
+  <div class="ui-grid-b" >
+      <div class="ui-block-a"><span><b>车    型:</b> {{ todo.car.carName }}</span></div>
+      <div class="ui-block-b"><span><b>车身颜色:</b> {{ todo.car.carColor }}</span></div>
+  </div></br>
+  <div class="ui-grid-b" >
+      <div class="ui-block-d"><span><b>电    话:</b> {{ todo.mobilePhone}}</span></div>
+      <div class="ui-block-b"><span><b>剩余座位:</b>{{ todo.car.carSeatsCount - todo.customer.length }}</span></div>
+  </div>
+  <div class="ui-grid-b" >
+      <div class="ui-block-d"><span><b>出行日期:</b> {{ todo.setoffDate }}</span></div>
+      <div class="ui-block-b"><span><b>终点:</b> {{ todo.destination }}</span></div>
+  </div>
+  <p><b>出发时间:</b> {{ todo.setoffTime }}</p>
+  <p><b>行程路线:</b></br>
+  	{{ todo.routePoint | replace(',','</br>','g')|safe}}
+  </p>
+  <p><b>备    注:</b> {{ todo.description}}</p>
+  {% if todo.car.carSeatsCount - todo.customer.length > 0 %}
+  	<p><a href="/todo/order/{{ todo._id.toString() }}" data-role="button">预 定</a></p> 
+  {% endif %}
+  <table data-role="table" id="table-column-toggle" data-mode="columntoggle" border="10" class="ui-responsive table-stroke">
+     <thead>
+       <tr>
+         <th data-priority="1">顾客称呼</th>
+         <th data-priority="2">顾客电话</th>
+         <th data-priority="3">等车地点</th>
+       </tr>
+     </thead>
+     <tbody>
+	   {% for customerObj in todo.customer %}
+	       <tr>
+	         <td>{{ customerObj.customerName }}</td>
+	         <td>{{ customerObj.customerPhoneNumber }}</td>
+	         <td>{{ customerObj.customerLocation }}</td>
+	       </tr>
+	   {% endfor %}
+     </tbody>
+   </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <p><em>Created On: </i> {{ todo.created_on.toDateString() }}</p>
+  <p><i>Last Updated On: </i> {{ todo.updated_on.toDateString() }}</p>
 {% endblock %}
