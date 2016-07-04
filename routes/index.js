@@ -1,27 +1,29 @@
 var parse  = require('co-body');
 var render = require('../lib/views');
-var todos  = require('../models/todos');
+var bookingcar = require('../models/bookingcar');
+// var todos  = require('../models/todos');
 
 // Route definitions
 
-
-
+/**
+ * 地图定位跳转
+ */
 exports.locate = function *(){
   this.body = yield render('locate');
 };
 
 
 /**
- * Item List.
+ * 显示所有行程信息
  */
 exports.list = function *() {
-  var results = yield todos.find({});
+  var results = yield bookingcar.find({});
   console.log(results);
-  this.body = yield render('index', {todos: results});
+  this.body = yield render('index', {bookingcar: results});
 };
 
 /**
- * Form for creating new todo item.
+ * 跳转到添加行程信息页面
  */
 exports.add = function *() {
   var ss = this.session;
@@ -29,58 +31,61 @@ exports.add = function *() {
 };
 
 /**
- * Form for editing a todo item.
+ * 跳转到修改行程信息页面
  */
 exports.edit = function *(id) {
-  var result = yield todos.findById(id);
+  var result = yield bookingcar.findById(id);
   console.log(JSON.stringify(result));
   if (!result) {
-    this.throw(404, 'invalid todo id');
+    this.throw(404, 'invalid bookingcar id');
   }
-  this.body = yield render('edit', {todo: result});
-};
-
-exports.order = function *(id) {
-  var result = yield todos.findById(id);
-  console.log(JSON.stringify(result));
-  if (!result) {
-    this.throw(404, 'invalid todo id');
-  }
-  this.body = yield render('order', {todo: result});
+  this.body = yield render('edit', {bookingcar: result});
 };
 
 /**
- * Show details of a todo item.
+ * 跳转到预定页面
+ */
+exports.order = function *(id) {
+  var result = yield bookingcar.findById(id);
+  console.log(JSON.stringify(result));
+  if (!result) {
+    this.throw(404, 'invalid bookingcar id');
+  }
+  this.body = yield render('order', {bookingcar: result});
+};
+
+/**
+ * 显示行程详细信息
  */
 exports.show = function *(id) {
-  var result = yield todos.findById(id);
+  var result = yield bookingcar.findById(id);
   if (!result) {
-    this.throw(404, 'invalid todo id');
+    this.throw(404, 'invalid bookingcar id');
   }
-  this.body = yield render('show', {todo: result});
+  this.body = yield render('show', {bookingcar: result});
 };
 
 /**
- * Delete a todo item
+ * 删除一个行程
  */
 exports.remove = function *(id) {
   var input = yield parse.form(this);
   console.log(input);
   var pwd = input.pass;
   if(pwd == "abc"){
-    yield todos.remove({"_id": id});
+    yield bookingcar.remove({"_id": id});
   }
   this.redirect('/');
 };
 
 /**
- * Create a todo item in the data store
+ * 创建行程信息
  */
 exports.create = function *() {
   var input = yield parse(this);
   console.log(input);
   var d = new Date();
-  yield todos.insert({
+  yield bookingcar.insert({
     carOwnerName: input.CarOwnerName,
     routePoint: input.RoutePoint,
     mobilePhone: input.MobilePhone,
@@ -107,11 +112,56 @@ exports.create = function *() {
 };
 
 
+
+
+/**
+ * 跳转到添加行程信息页面
+ */
+exports.addOwner = function *() {
+  var ss = this.session;
+  this.body = yield render('owner/listowner',{session: ss});
+};
+/**
+ * 显示所有车主
+ */
+exports.listCarOwner = function *() {
+  var results = yield bookingcar.find({});
+  console.log(results);
+  this.body = yield render('owner/listowner', {bookingcar: results});
+};
+/**
+ * 创建车主信息
+ */
+exports.createCarOwner = function *() {
+  var input = yield parse(this);
+  console.log(input);
+  var d = new Date();
+  yield bookingcar.insert({
+    carOwnerName: input.CarOwnerName,
+    mobilePhone: input.MobilePhone,
+    car:{
+      carNumberPlate: input.CarNumberPlate,
+      carName: input.CarName,
+      carColor: input.CarColor,
+      carSeatsCount: input.CarSeatsCount
+    },
+    route:[],
+    customer:[],
+    isStandardUser: false,
+    created_on: d,
+    updated_on: d
+  });
+  this.redirect('/');
+};
+
+/**
+ * 修改行程信息.
+ */
 exports.update = function *() {
   var input = yield parse(this);
   console.log(input);
   var d = new Date();
-  yield todos.updateById(input.id, {
+  yield bookingcar.updateById(input.id, {
     carOwnerName: input.CarOwnerName,
     routePoint: input.RoutePoint,
     mobilePhone: input.MobilePhone,
@@ -138,12 +188,12 @@ exports.update = function *() {
 };
 
 /**
- * Update an existing todo item.
+ * 预定一个位置.
  */
 exports.updateOrder = function *() {
   var input = yield parse(this);
   console.log(input);
-  yield todos.updateById(input.id, {
+  yield bookingcar.updateById(input.id, {
     $addToSet:{
       customer:{
         customerName: input.CustomerName,
@@ -152,24 +202,7 @@ exports.updateOrder = function *() {
       }
     }
   });
-  this.redirect('/todo/'+input.id);
-};
-
-exports.updateCarOwnerJsonObject = function *() {
-  var input = yield parse(this);
-  console.log(input);
-  yield todos.updateById(input.id, {
-    name: input.name,
-    description: input.description,
-    created_on: new Date(input.created_on),
-    updated_on: new Date()});
-  this.redirect('/');
-};
-
-exports.offlineCache = function *(req, res){
-  console.log("is cacheing");
-  res.header("Content-Type", "text/cache-manifest");
-  res.end("CACHE MANIFEST");
+  this.redirect('/bookingcar/'+input.id);
 };
 
 

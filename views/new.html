@@ -1,32 +1,14 @@
 {% extends 'layout.html' %}
 
 {% block title %}创建一个车主{% endblock %}
-
+{% block pagename %}创建一个车主{% endblock %}
 
 {% block retrunButton %}
   <a href="/" data-role="button" data-icon="back" data-iconpos="notext">返回</a>
 {% endblock %}
 
 
-{% block content %}
-  <form action="/todo/create" method="post">
-  <!-- <p>ste:{{session.loginid}}</p> -->
-
-    {% if !session.loginid %}
-       <input type="text" placeholder="车主姓名" name="CarOwnerName" />
-       <input type="text" placeholder="车牌(车牌尾号)" name="CarNumberPlate" />
-       <input type="text" placeholder="车辆名称(例:标致508)" name="CarName" />
-       <input type="text" placeholder="车辆颜色" name="CarColor" />
-    {% endif %}
-
-    <input type="text" placeholder="手机" name="MobilePhone" />
-    <input type="text" placeholder="出发日期" onfocus="this.type='date';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffDate"/>
-    <input type="text" placeholder="出发时间" onfocus="this.type='time';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffTime" />
-    <input type="text" placeholder="终点" name="Destination" />
-    <textarea cols="40" placeholder="途径地点 例如: 软件园二期文思海辉大厦,数字山谷大厦(从一期西门入的第一个十字路口),软件园一期汉王大门出,信息路(7街),信息路(6街),信息路(5街),信息路(4街),信息路(3街),上地东里小区门口,朱房路(G7)" rows="8" name="RoutePoint"></textarea>
-    <input type="text" placeholder="空余座位" name="CarSeatsCount" value="4"/>
-    <input type="text" placeholder="备注" name="description" />
-    <input type="submit" value="创建" />
-  </form>
+{% block route_content %}
+  
 {% endblock %}
  

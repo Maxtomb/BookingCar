@@ -1,18 +1,18 @@
 {% extends 'layout.html' %}
 
 {% block title %}顾客信息录入{% endblock %}
-
+{% block pagename %}顾客信息录入{% endblock %}
 {% block retrunButton %}
   <a href="/" data-role="button" data-icon="back" data-iconpos="notext">返回</a>
 {% endblock %}
 
-{% block content %}
+{% block route_content %}
   <h1>请填写您的联系信息</h1>
-   <form action="/todo/updateOrder" method="post">
-    <p><input type="hidden" value="{{ todo._id.toString() }}" name="id"></p>
+   <form action="/bookingcar/updateOrder" method="post">
+    <p><input type="hidden" value="{{ bookingcar._id.toString() }}" name="id"></p>
     <p><input type="text" placeholder="称呼"  name="CustomerName" id="CustomerName"></p>
     <p><input type="text" placeholder="乘客手机号" name="CustomerPhoneNumber"></p>
-    {% set optionsArray = "<option>"+todo.routePoint|replace(',','</option><option>','g')+"</option>" %}
+    {% set optionsArray = "<option>"+bookingcar.routePoint|replace(',','</option><option>','g')+"</option>" %}
     <select name="CustomerLocation"  placeholder="等车位置" id="CustomerLocation" data-native-menu="false">
       <option>请选择一个位置</option>
       {{ optionsArray|safe }}

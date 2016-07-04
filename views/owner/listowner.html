@@ -1,0 +1,23 @@
+
+{% extends '../layout.html' %}
+
+
+{% block owner_content %}
+<p>现在已经有 <strong>{{ bookingcar.length }}</strong>车主已注册</p> 
+
+<h2>所有车主</h2>
+<ul data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="车主查询..." data-inset="true">
+  <ul data-role="collapsible-set" data-inset="true" data-filter="true"  style="margin:0;padding:0">
+    {% for bookcar in bookingcar %}
+    <div data-role="collapsible">
+      <h1>{{ bookcar.carOwnerName }}, 出发时间: {{ bookcar.setoffTime }}, 剩余座位:{{ bookcar.car.carSeatsCount - bookcar.customer.length }}</h1>
+      <p>
+        途经: {{ bookcar.routePoint }}</br>
+        <a href="/bookingcar/{{ bookcar._id.toString() }}"> 查看详情</a>
+        <a href="/bookingcar/edit/{{ bookcar._id.toString() }}"> 修改车主信息</a>
+      </p>
+    </div>
+    {% endfor %}
+  </ul>
+</ul>
+{% endblock %}
