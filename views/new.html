@@ -8,8 +8,8 @@
 {% endblock %}
 
 
-{% block content %}
-  <form action="/todo/create" method="post">
+{% block pageone_content %}
+  <form action="/bookingcar/create" method="post">
   <!-- <p>ste:{{session.loginid}}</p> -->
 
     {% if !session.loginid %}
@@ -30,3 +30,13 @@
   </form>
 {% endblock %}
  
+{% block pagetwo_content %}
+  <form action="/bookingcar/createowner" method="post">
+     <input type="text" placeholder="车主姓名" name="CarOwnerName" />
+     <input type="text" placeholder="车牌(车牌尾号)" name="CarNumberPlate" />
+     <input type="text" placeholder="车辆名称(例:标致508)" name="CarName" />
+     <input type="text" placeholder="车辆颜色" name="CarColor" />
+     <input type="text" placeholder="手机" name="MobilePhone" />
+     <input type="submit" value="创建" />
+  </form>
+{% endblock %}

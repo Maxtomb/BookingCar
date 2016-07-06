@@ -1,6 +1,6 @@
 var parse  = require('co-body');
 var render = require('../lib/views');
-var todos  = require('../models/todos');
+var bookingcar  = require('../models/bookingcar');
 
 // Route definitions
 
@@ -15,10 +15,22 @@ exports.locate = function *(){
  * Item List.
  */
 exports.list = function *() {
-  var results = yield todos.find({});
+  var results = yield bookingcar.find({});
   console.log(results);
-  this.body = yield render('index', {todos: results});
+  this.body = yield render('index', {bookingcar: results});
 };
+
+
+/**
+ * Item List.
+ */
+exports.listowner = function *() {
+  var results = yield bookingcar.find({});
+  console.log(results);
+  this.body = yield render('listowner', {bookingcar: results});
+};
+
+
 
 /**
  * Form for creating new todo item.
@@ -32,7 +44,7 @@ exports.add = function *() {
  * Form for editing a todo item.
  */
 exports.edit = function *(id) {
-  var result = yield todos.findById(id);
+  var result = yield bookingcar.findById(id);
   console.log(JSON.stringify(result));
   if (!result) {
     this.throw(404, 'invalid todo id');
@@ -41,7 +53,7 @@ exports.edit = function *(id) {
 };
 
 exports.order = function *(id) {
-  var result = yield todos.findById(id);
+  var result = yield bookingcar.findById(id);
   console.log(JSON.stringify(result));
   if (!result) {
     this.throw(404, 'invalid todo id');
@@ -53,7 +65,7 @@ exports.order = function *(id) {
  * Show details of a todo item.
  */
 exports.show = function *(id) {
-  var result = yield todos.findById(id);
+  var result = yield bookingcar.findById(id);
   if (!result) {
     this.throw(404, 'invalid todo id');
   }
@@ -68,7 +80,7 @@ exports.remove = function *(id) {
   console.log(input);
   var pwd = input.pass;
   if(pwd == "abc"){
-    yield todos.remove({"_id": id});
+    yield bookingcar.remove({"_id": id});
   }
   this.redirect('/');
 };
@@ -80,7 +92,7 @@ exports.create = function *() {
   var input = yield parse(this);
   console.log(input);
   var d = new Date();
-  yield todos.insert({
+  yield bookingcar.insert({
     carOwnerName: input.CarOwnerName,
     routePoint: input.RoutePoint,
     mobilePhone: input.MobilePhone,
@@ -111,7 +123,7 @@ exports.update = function *() {
   var input = yield parse(this);
   console.log(input);
   var d = new Date();
-  yield todos.updateById(input.id, {
+  yield bookingcar.updateById(input.id, {
     carOwnerName: input.CarOwnerName,
     routePoint: input.RoutePoint,
     mobilePhone: input.MobilePhone,
@@ -143,7 +155,7 @@ exports.update = function *() {
 exports.updateOrder = function *() {
   var input = yield parse(this);
   console.log(input);
-  yield todos.updateById(input.id, {
+  yield bookingcar.updateById(input.id, {
     $addToSet:{
       customer:{
         customerName: input.CustomerName,
@@ -158,7 +170,7 @@ exports.updateOrder = function *() {
 exports.updateCarOwnerJsonObject = function *() {
   var input = yield parse(this);
   console.log(input);
-  yield todos.updateById(input.id, {
+  yield bookingcar.updateById(input.id, {
     name: input.name,
     description: input.description,
     created_on: new Date(input.created_on),

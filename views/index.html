@@ -2,25 +2,25 @@
 
 {% block title %}创建一个行程{% endblock %}
 
-{% block retrunButton %}
-   <a href="/todo/new" data-role="button" data-icon="plus" data-iconpos="notext">创建一次行程</a>
+{% block pageone_header %}
+ <a href="/bookingcar/new" data-role="button" data-icon="plus" data-iconpos="notext">test</a>
 {% endblock %}
  
-{% block content %}
-  <p>现在已经有 <strong>{{ todos.length }}</strong>车辆 准备出发</p> 
+{% block pageone_content %}
+  <p>现在已经有 <strong>{{ bookingcar.length }}</strong>车辆 准备出发</p> 
    
   <h2>所有行程</h2>
   <ul data-role="collapsible-set" data-inset="true" data-filter="true" style="margin:0;padding:0">
-    {% for todo in todos %}
+    {% for carowner in bookingcar %}
         <div data-role="collapsible">
-          <h1>{{ todo.car.carName }}, 出发时间: {{ todo.setoffTime }}, 剩余座位:{{ todo.car.carSeatsCount - todo.customer.length }}</h1>
+          <h1>{{ carowner.car.carName }}, 出发时间: {{ carowner.setoffTime }}, 剩余座位:{{ carowner.car.carSeatsCount - carowner.customer.length }}</h1>
            <p>
-              途经: {{ todo.routePoint }}</br>
-              <a href="/todo/{{ todo._id.toString() }}"> 查看详情</a>
-              <a href="/todo/edit/{{ todo._id.toString() }}"> 修改行程</a>
+              途经: {{ carowner.routePoint }}</br>
+              <a href="/bookingcar/{{ bookingcar._id.toString() }}"> 查看详情</a>
+              <a href="/bookingcar/edit/{{ bookingcar._id.toString() }}"> 修改行程</a>
               <a href="#popupdelete" data-rel="popup" data-position-to="window" data-transition="pop"> 删除行程</a>
               <div data-role="popup" id="popupdelete" data-theme="a" class="ui-corner-all">
-                  <form action="/todo/delete/{{ todo._id.toString()}}">
+                  <form action="/bookingcar/delete/{{ bookingcar._id.toString()}}">
                       <div style="padding:10px 20px;">
                           <h3>请输入管理员密码</h3>
                           <label for="pw" class="ui-hidden-accessible">Password:</label>
@@ -34,4 +34,29 @@
     {% endfor %}
   </ul>
   
+{% endblock %}
+ 
+
+{% block pagetwo_header %}
+   <a href="/bookingcar/new" data-role="button" data-icon="plus">test</a>
+{% endblock %}
+
+{% block pagetwo_content %}
+  <script type="text/javascript">
+    $.mobile.changePage("#pagetwo");
+  </script>
+  <p>现在已经有 <strong>{{ bookingcar.length }}</strong>车主已注册</p> 
+   
+  <h2>所有车主</h2>
+  <ul data-role="collapsible-set" data-inset="true" data-filter="true" style="margin:0;padding:0">
+    {% for carowner in bookingcar %}
+        <div data-role="collapsible">
+          <h1>{{ carowner.carOwnerName }}</h1>
+           <p>
+              <a href="/bookingcar/{{ bookingcar._id.toString() }}"> 查看车主详情</a>
+              <a href="/bookingcar/edit/{{ bookingcar._id.toString() }}"> 修改车主信息</a>
+           </p>
+        </div>
+    {% endfor %}
+  </ul>
 {% endblock %}

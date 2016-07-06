@@ -27,14 +27,14 @@ app.use(function* (next){
   this.session.views = ++n;
   this.session.loginid = null;
 });
-app.use(route.get('/todo/new', routes.add));
-app.use(route.get('/todo/:id', routes.show));
-app.use(route.get('/todo/delete/:id', routes.remove));
-app.use(route.get('/todo/edit/:id', routes.edit));
-app.use(route.get('/todo/order/:id', routes.order));
-app.use(route.post('/todo/create', routes.create));
-app.use(route.post('/todo/update', routes.update));
-app.use(route.post('/todo/updateOrder', routes.updateOrder));
+app.use(route.get('/bookingcar/new', routes.add));
+app.use(route.get('/bookingcar/:id', routes.show));
+app.use(route.get('/bookingcar/delete/:id', routes.remove));
+app.use(route.get('/bookingcar/edit/:id', routes.edit));
+app.use(route.get('/bookingcar/order/:id', routes.order));
+app.use(route.post('/bookingcar/create', routes.create));
+app.use(route.post('/bookingcar/update', routes.update));
+app.use(route.post('/bookingcar/updateOrder', routes.updateOrder));
 app.use(route.get('/locate', routes.locate));
 
 
