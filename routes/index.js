@@ -1,6 +1,8 @@
 var parse  = require('co-body');
 var render = require('../lib/views');
 var bookingcar  = require('../models/bookingcar');
+var carOwnerCollection = require('../models/CarOwner');
+var routeOrderCollection = require('../models/RouteOrder'); 
 
 // Route definitions
 
@@ -12,68 +14,73 @@ exports.locate = function *(){
 
 
 /**
- * Item List.
+ * Item ListRouteOrder.
  */
-exports.list = function *() {
-  var results = yield bookingcar.find({});
-  console.log(results);
-  this.body = yield render('index', {bookingcar: results});
+exports.listRouteOrder = function *() {
+  var carOwner = yield carOwnerCollection.find({});
+  var routeOrder = yield routeOrderCollection.find({});
+  this.body = yield render('index', {routeOrders: routeOrder, carOwner: carOwner});
 };
 
 
 /**
  * Item List.
  */
-exports.listowner = function *() {
-  var results = yield bookingcar.find({});
+exports.addOwner = function *() {
+  var results = yield carOwnerCollection.find({});
   console.log(results);
-  this.body = yield render('listowner', {bookingcar: results});
+  this.body = yield render('newowner', {carOwner: results});
 };
 
 
 
 /**
- * Form for creating new todo item.
+ * Form for creating new bookingcar item.
  */
-exports.add = function *() {
-  var ss = this.session;
-  this.body = yield render('new',{session: ss});
+exports.addRouteOrder = function *() {
+  var results = yield carOwnerCollection.find({});
+  console.log(results);
+  this.body = yield render('newrouteorder',{carOwner: results});
 };
 
 /**
- * Form for editing a todo item.
+ * Form for editing a bookingcar item.
  */
 exports.edit = function *(id) {
   var result = yield bookingcar.findById(id);
   console.log(JSON.stringify(result));
   if (!result) {
-    this.throw(404, 'invalid todo id');
+    this.throw(404, 'invalid bookingcar id');
   }
-  this.body = yield render('edit', {todo: result});
+  this.body = yield render('edit', {bookingcar: result});
 };
 
-exports.order = function *(id) {
-  var result = yield bookingcar.findById(id);
-  console.log(JSON.stringify(result));
+exports.neworder = function *(id,carOwnerId) {
+  var result = yield routeOrderCollection.findById(id);
+  console.log(result);
   if (!result) {
-    this.throw(404, 'invalid todo id');
+    this.throw(404, 'invalid bookingcar id');
   }
-  this.body = yield render('order', {todo: result});
+  this.body = yield render('order', {routeOrder: result,carOwnerId: carOwnerId});
 };
 
 /**
- * Show details of a todo item.
+ * Show details of a bookingcar item.
  */
-exports.show = function *(id) {
-  var result = yield bookingcar.findById(id);
-  if (!result) {
-    this.throw(404, 'invalid todo id');
+exports.showRouteOrder = function *(id,ownerid) { 
+  var order =  yield routeOrderCollection.findById(id);
+  var owner = yield carOwnerCollection.findById(ownerid);
+  console.log("--------------------------");
+  console.log(order);
+  console.log(owner);
+  if (!order) {
+    this.throw(404, 'invalid bookingcar id');
   }
-  this.body = yield render('show', {todo: result});
+  this.body = yield render('showrouteorder', {routeOrder: order,carOwner: owner});
 };
 
 /**
- * Delete a todo item
+ * Delete a bookingcar item
  */
 exports.remove = function *(id) {
   var input = yield parse.form(this);
@@ -85,39 +92,53 @@ exports.remove = function *(id) {
   this.redirect('/');
 };
 
-/**
- * Create a todo item in the data store
- */
-exports.create = function *() {
+exports.createRouteOrder = function *() {
+  var input = yield parse(this);
+  console.log("-------Create Route Order Input--------");
+  console.dir(input);
+  var d = new Date();
+
+  var routeOrderObj = yield routeOrderCollection.insert({
+        setoffDate: input.SetoffDate,
+        setoffTime: input.SetoffTime,
+        destination: input.Destination,
+        routePoint: input.RoutePoint,
+        carSeatsCount: input.CarSeatsCount,
+        customer:[],
+        description: input.description,
+        created_on: d,
+        updated_on: d
+  });
+  var id = routeOrderObj._id.toString();
+  yield carOwnerCollection.updateById(input.OwnerName,{
+    $addToSet:{
+      routeOrder:{
+        "routeOrderId":id
+      }
+    }
+  });
+  this.redirect('/');
+};
+
+exports.createOwner = function *() {
   var input = yield parse(this);
   console.log(input);
   var d = new Date();
-  yield bookingcar.insert({
+  yield carOwnerCollection.insert({
     carOwnerName: input.CarOwnerName,
-    routePoint: input.RoutePoint,
     mobilePhone: input.MobilePhone,
-    setoffDate: input.SetoffDate,
-    setoffTime: input.SetoffTime,
-    destination: input.Destination,
-    setoffLocation: {
-      city: input.SetoffCity,
-      address: input.SetoffAddress
-    },
+    routeOrder:[],
     car:{
       carNumberPlate: input.CarNumberPlate,
       carName: input.CarName,
-      carColor: input.CarColor,
-      carSeatsCount: input.CarSeatsCount
+      carColor: input.CarColor
     },
-    customer:[],
-    description: input.description,
     isStandardUser: false,
     created_on: d,
     updated_on: d
   });
   this.redirect('/');
 };
-
 
 exports.update = function *() {
   var input = yield parse(this);
@@ -149,10 +170,7 @@ exports.update = function *() {
   this.redirect('/');
 };
 
-/**
- * Update an existing todo item.
- */
-exports.updateOrder = function *() {
+exports.createCustomer = function *() {
   var input = yield parse(this);
   console.log(input);
   yield bookingcar.updateById(input.id, {
@@ -164,7 +182,26 @@ exports.updateOrder = function *() {
       }
     }
   });
-  this.redirect('/todo/'+input.id);
+  this.redirect('/bookingcar/'+input.id);
+};
+
+
+/**
+ * Update an existing bookingcar item.
+ */
+exports.updateOrder = function *() {
+  var input = yield parse(this);
+  console.log(input);
+  yield routeOrderCollection.updateById(input.id, {
+    $addToSet:{
+      customer:{
+        customerName: input.CustomerName,
+        customerPhoneNumber: input.CustomerPhoneNumber,
+        customerLocation: input.CustomerLocation
+      }
+    }
+  });
+  this.redirect('/bookingcar/showrouteorder/'+input.id+"/"+input.carOwnerId);
 };
 
 exports.updateCarOwnerJsonObject = function *() {

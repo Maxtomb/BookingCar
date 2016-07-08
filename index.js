@@ -18,7 +18,7 @@ app.use(stylus('./public'));
 app.use(serve('./public'));
 
 // Route middleware
-app.use(route.get('/', routes.list));
+app.use(route.get('/', routes.listRouteOrder));
 // app.use(route.get('/offline.manifest',route.offlineCache));
 app.use(function* (next){
   yield next;
@@ -27,12 +27,19 @@ app.use(function* (next){
   this.session.views = ++n;
   this.session.loginid = null;
 });
-app.use(route.get('/bookingcar/new', routes.add));
-app.use(route.get('/bookingcar/:id', routes.show));
+//所有跳转增加页面的 path 使用new 开头, 对应的route 使用add 
+app.use(route.get('/bookingcar/newrouteorder', routes.addRouteOrder));
+app.use(route.get('/bookingcar/newowner', routes.addOwner));
+
+//所有的增加操作的path 使用 create 开头, 对应的route 使用create
+app.use(route.post('/bookingcar/createrouteorder', routes.createRouteOrder));
+app.use(route.post('/bookingcar/createowner', routes.createOwner));
+
+app.use(route.get('/bookingcar/showrouteorder/:id/:ownerid', routes.showRouteOrder));
 app.use(route.get('/bookingcar/delete/:id', routes.remove));
 app.use(route.get('/bookingcar/edit/:id', routes.edit));
-app.use(route.get('/bookingcar/order/:id', routes.order));
-app.use(route.post('/bookingcar/create', routes.create));
+app.use(route.get('/bookingcar/order/:id/:carOwnerId', routes.neworder));
+
 app.use(route.post('/bookingcar/update', routes.update));
 app.use(route.post('/bookingcar/updateOrder', routes.updateOrder));
 app.use(route.get('/locate', routes.locate));
