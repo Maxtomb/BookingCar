@@ -55,6 +55,16 @@ exports.edit = function *(id) {
   this.body = yield render('edit', {bookingcar: result});
 };
 
+
+exports.editCarOwner = function *(id) {
+  var result = yield carOwnerCollection.findById(id);
+  console.log(JSON.stringify(result));
+  if (!result) {
+    this.throw(404, 'invalid carOwner id');
+  }
+  this.body = yield render('editcarowner', {carOwner: result});
+};
+
 exports.neworder = function *(id,carOwnerId) {
   var result = yield routeOrderCollection.findById(id);
   console.log(result);
@@ -79,6 +89,17 @@ exports.showRouteOrder = function *(id,ownerid) {
   this.body = yield render('showrouteorder', {routeOrder: order,carOwner: owner});
 };
 
+
+exports.showCarOwner = function *(id) { 
+  var owner = yield carOwnerCollection.findById(id);
+  console.log("--------------------------");
+  console.log(owner);
+  if (!owner) {
+    this.throw(404, 'invalid bookingcar id');
+  }
+  this.body = yield render('showcarowner', {carOwner: owner});
+};
+
 /**
  * Delete a bookingcar item
  */
@@ -89,6 +110,13 @@ exports.remove = function *(id) {
   if(pwd == "abc"){
     yield bookingcar.remove({"_id": id});
   }
+  this.redirect('/');
+};
+
+exports.deleteCarOwner = function *(id) {
+  var input = yield parse.form(this);
+  console.log(input);
+  yield carOwnerCollection.remove({"_id": id});
   this.redirect('/');
 };
 
@@ -170,6 +198,27 @@ exports.update = function *() {
   this.redirect('/');
 };
 
+exports.updateOwner = function *() {
+  var input = yield parse(this);
+    var d = new Date();
+  console.log(JSON.stringify(input));
+ var result = yield carOwnerCollection.updateById(input.id, {$set:{
+      carOwnerName: input.CarOwnerName,
+      mobilePhone: input.MobilePhone,
+      car:{
+        carNumberPlate: input.CarNumberPlate,
+        carName: input.CarName,
+        carColor: input.CarColor
+      },
+      updated_on: d
+    }
+  });
+  console.log(result);
+  this.redirect('/');
+};
+
+
+
 exports.createCustomer = function *() {
   var input = yield parse(this);
   console.log(input);
@@ -201,7 +250,7 @@ exports.updateOrder = function *() {
       }
     }
   });
-  this.redirect('/bookingcar/showrouteorder/'+input.id+"/"+input.carOwnerId);
+  this.redirect('/bookingcar/routeorder/'+input.id+"/"+input.carOwnerId);
 };
 
 exports.updateCarOwnerJsonObject = function *() {

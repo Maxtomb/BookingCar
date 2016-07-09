@@ -18,17 +18,17 @@
 <p>现在已经有 <strong>{{ routeOrders.length }}</strong>行程 准备出发</p> 
 
 <h2>所有行程</h2>
-<ul data-role="collapsible-set" data-inset="true" data-filter="true" style="margin:0;padding:0">
+<ul data-role="listview" data-filter="true" data-inset="true">
 {% for owner in carOwner %}
   {% for orderid in owner.routeOrder %}
       {% for order in routeOrders %}
           {% if orderid.routeOrderId == order._id.toString() %}
-            <div data-role="collapsible">
+            <div data-role="collapsible" style="margin:0;padding:0">
       
               <h1>{{ owner.carOwnerName }} 终点:{{ order.destination }}</h1>
               <p>
                 途经: {{ order.routePoint }}</br>
-                <a href="/bookingcar/showrouteorder/{{ order._id.toString() }}/{{ owner._id.toString() }}"> 查看详情</a>
+                <a href="/bookingcar/routeorder/{{ order._id.toString() }}/{{ owner._id.toString() }}"> 查看详情</a>
                 <a href="/bookingcar/edit/{{ routeOrder._id.toString() }}"> 修改行程</a>
                 <a href="#popupdelete" data-rel="popup" data-position-to="window" data-transition="pop"> 删除行程</a>
                 <div data-role="popup" id="popupdelete" data-theme="a" class="ui-corner-all">
@@ -53,22 +53,29 @@
 
 <!-- pagetwo的继承 -->
 {% block pagetwo_header %}
-<a href="/bookingcar/newowner" data-role="button" data-icon="plus">test</a>
+<a href="/bookingcar/newowner" data-role="button" data-icon="plus" data-iconpos="notext"></a>
 {% endblock %}
-{% set foo = { pagename: "显示所有车主" } %}
+{% set x = { pagename: "显示所有车主" } %}
 {% block pagetwo_content %}
-<p>现在已经有 <strong>{{ carOwner.length }}</strong>车主已注册</p> 
 
+<p>现在已经有 <strong>{{ carOwner.length }}</strong>车主已注册</p> 
 <h2>所有车主</h2>
-<ul data-role="collapsible-set" data-inset="true" data-filter="true" style="margin:0;padding:0">
+
+<ul data-role="listview" data-filter="true" data-inset="true" id="lista">
+  
   {% for owner in carOwner %}
-  <div data-role="collapsible">
-    <h1>{{ owner.carOwnerName }}</h1>
-    <p>
-      <a href="/bookingcar/{{ bookingcar._id.toString() }}"> 查看车主详情</a>
-      <a href="/bookingcar/edit/{{ bookingcar._id.toString() }}"> 修改车主信息</a>
-    </p>
-  </div>
+
+    <div data-role="collapsible" style="margin:0;padding:0">
+      <h1>{{ owner.carOwnerName }}</h1>
+      <p>
+        <a href="/bookingcar/carowner/{{ owner._id.toString() }}"> 查看详情</a>
+        <a href="/bookingcar/carowner/edit/{{ owner._id.toString() }}"> 修改信息</a>
+        <a href="/bookingcar/carowner/delete/{{ owner._id.toString() }}"> 删除信息</a>
+      </p>
+    </div>
+  
   {% endfor %}
+
 </ul>
+
 {% endblock %}

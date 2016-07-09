@@ -34,10 +34,16 @@ app.use(route.get('/bookingcar/newowner', routes.addOwner));
 //所有的增加操作的path 使用 create 开头, 对应的route 使用create
 app.use(route.post('/bookingcar/createrouteorder', routes.createRouteOrder));
 app.use(route.post('/bookingcar/createowner', routes.createOwner));
+app.use(route.post('/bookingcar/updateowner', routes.updateOwner));
 
-app.use(route.get('/bookingcar/showrouteorder/:id/:ownerid', routes.showRouteOrder));
-app.use(route.get('/bookingcar/delete/:id', routes.remove));
-app.use(route.get('/bookingcar/edit/:id', routes.edit));
+
+app.use(route.get('/bookingcar/routeorder/:id/:ownerid', routes.showRouteOrder));
+app.use(route.get('/bookingcar/routeorder/delete/:id/:ownerid', routes.deleteRouteOrder));
+app.use(route.get('/bookingcar/routeorder/edit/:id/:ownerid', routes.editRouteOrder));
+app.use(route.get('/bookingcar/carowner/:id', routes.showCarOwner));
+app.use(route.get('/bookingcar/carowner/delete/:id', routes.deleteCarOwner));
+app.use(route.get('/bookingcar/carowner/edit/:id', routes.editCarOwner));
+
 app.use(route.get('/bookingcar/order/:id/:carOwnerId', routes.neworder));
 
 app.use(route.post('/bookingcar/update', routes.update));
