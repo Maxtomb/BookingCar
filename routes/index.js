@@ -1,20 +1,10 @@
 var parse  = require('co-body');
 var render = require('../lib/views');
-var bookingcar  = require('../models/bookingcar');
 var carOwnerCollection = require('../models/CarOwner');
 var routeOrderCollection = require('../models/RouteOrder'); 
 
-// Route definitions
-
-
-
-exports.locate = function *(){
-  this.body = yield render('locate');
-};
-
-
 /**
- * Item ListRouteOrder.
+ *  显示所有行程
  */
 exports.listRouteOrder = function *() {
   var carOwner = yield carOwnerCollection.find({});
@@ -24,18 +14,17 @@ exports.listRouteOrder = function *() {
 
 
 /**
- * Item List.
+ * 跳转到增加车主页面
  */
-exports.addOwner = function *() {
+exports.addCarOwner = function *() {
   var results = yield carOwnerCollection.find({});
   console.log(results);
-  this.body = yield render('newowner', {carOwner: results});
+  this.body = yield render('newcarowner', {carOwner: results});
 };
 
 
-
 /**
- * Form for creating new bookingcar item.
+ * 跳转到增加行程页面
  */
 exports.addRouteOrder = function *() {
   var results = yield carOwnerCollection.find({});
@@ -44,18 +33,20 @@ exports.addRouteOrder = function *() {
 };
 
 /**
- * Form for editing a bookingcar item.
+ * 编辑行程信息
  */
-exports.edit = function *(id) {
-  var result = yield bookingcar.findById(id);
+exports.editRouteOrder = function *(id) {
+  var result = yield routeOrderCollection.findById(id);
   console.log(JSON.stringify(result));
   if (!result) {
     this.throw(404, 'invalid bookingcar id');
   }
-  this.body = yield render('edit', {bookingcar: result});
+  this.body = yield render('editrouteorder', {routeOrder: result});
 };
 
-
+/**
+ * 编辑车主信息
+ */
 exports.editCarOwner = function *(id) {
   var result = yield carOwnerCollection.findById(id);
   console.log(JSON.stringify(result));
@@ -65,22 +56,25 @@ exports.editCarOwner = function *(id) {
   this.body = yield render('editcarowner', {carOwner: result});
 };
 
-exports.neworder = function *(id,carOwnerId) {
+
+/**
+ *  跳转预约车辆页面
+ */
+exports.makeOrder = function *(id,carOwnerId) {
   var result = yield routeOrderCollection.findById(id);
   console.log(result);
   if (!result) {
     this.throw(404, 'invalid bookingcar id');
   }
-  this.body = yield render('order', {routeOrder: result,carOwnerId: carOwnerId});
+  this.body = yield render('makeorder', {routeOrder: result,carOwnerId: carOwnerId});
 };
 
 /**
- * Show details of a bookingcar item.
+ * 显示行程详细信息
  */
 exports.showRouteOrder = function *(id,ownerid) { 
   var order =  yield routeOrderCollection.findById(id);
   var owner = yield carOwnerCollection.findById(ownerid);
-  console.log("--------------------------");
   console.log(order);
   console.log(owner);
   if (!order) {
@@ -89,10 +83,11 @@ exports.showRouteOrder = function *(id,ownerid) {
   this.body = yield render('showrouteorder', {routeOrder: order,carOwner: owner});
 };
 
-
+/**
+ * 显示车主详细信息
+ */
 exports.showCarOwner = function *(id) { 
   var owner = yield carOwnerCollection.findById(id);
-  console.log("--------------------------");
   console.log(owner);
   if (!owner) {
     this.throw(404, 'invalid bookingcar id');
@@ -101,18 +96,21 @@ exports.showCarOwner = function *(id) {
 };
 
 /**
- * Delete a bookingcar item
+ * 删除行程信息
  */
-exports.remove = function *(id) {
+exports.deleteRouteOrder = function *(id) {
   var input = yield parse.form(this);
   console.log(input);
   var pwd = input.pass;
   if(pwd == "abc"){
-    yield bookingcar.remove({"_id": id});
+    yield routeOrderCollection.remove({"_id": id});
   }
   this.redirect('/');
 };
 
+/**
+ * 删除车主信息
+ */
 exports.deleteCarOwner = function *(id) {
   var input = yield parse.form(this);
   console.log(input);
@@ -120,9 +118,11 @@ exports.deleteCarOwner = function *(id) {
   this.redirect('/');
 };
 
+/**
+ * 创建行程
+ */
 exports.createRouteOrder = function *() {
   var input = yield parse(this);
-  console.log("-------Create Route Order Input--------");
   console.dir(input);
   var d = new Date();
 
@@ -148,7 +148,10 @@ exports.createRouteOrder = function *() {
   this.redirect('/');
 };
 
-exports.createOwner = function *() {
+/**
+ * 创建车主
+ */
+exports.createCarOwner = function *() {
   var input = yield parse(this);
   console.log(input);
   var d = new Date();
@@ -168,7 +171,10 @@ exports.createOwner = function *() {
   this.redirect('/');
 };
 
-exports.update = function *() {
+/**
+ * 更新行程
+ */
+exports.updateRouteOrder = function *() {
   var input = yield parse(this);
   console.log(input);
   var d = new Date();
@@ -198,7 +204,10 @@ exports.update = function *() {
   this.redirect('/');
 };
 
-exports.updateOwner = function *() {
+/**
+ * 更新车主
+ */
+exports.updateCarOwner = function *() {
   var input = yield parse(this);
     var d = new Date();
   console.log(JSON.stringify(input));
@@ -217,26 +226,8 @@ exports.updateOwner = function *() {
   this.redirect('/');
 };
 
-
-
-exports.createCustomer = function *() {
-  var input = yield parse(this);
-  console.log(input);
-  yield bookingcar.updateById(input.id, {
-    $addToSet:{
-      customer:{
-        customerName: input.CustomerName,
-        customerPhoneNumber: input.CustomerPhoneNumber,
-        customerLocation: input.CustomerLocation
-      }
-    }
-  });
-  this.redirect('/bookingcar/'+input.id);
-};
-
-
 /**
- * Update an existing bookingcar item.
+ * 下订单信息 预约成功
  */
 exports.updateOrder = function *() {
   var input = yield parse(this);
@@ -253,22 +244,7 @@ exports.updateOrder = function *() {
   this.redirect('/bookingcar/routeorder/'+input.id+"/"+input.carOwnerId);
 };
 
-exports.updateCarOwnerJsonObject = function *() {
-  var input = yield parse(this);
-  console.log(input);
-  yield bookingcar.updateById(input.id, {
-    name: input.name,
-    description: input.description,
-    created_on: new Date(input.created_on),
-    updated_on: new Date()});
-  this.redirect('/');
-};
 
-exports.offlineCache = function *(req, res){
-  console.log("is cacheing");
-  res.header("Content-Type", "text/cache-manifest");
-  res.end("CACHE MANIFEST");
-};
 
 
 

@@ -6,18 +6,9 @@
 {% block pageone_header %}
 <a href="/" data-role="button" data-icon="back" data-iconpos="notext">返回</a>
 {% endblock %}
-
 {% set foo = { pagename: "创建一个行程" } %}
-
 {% block pageone_content %}
   <form action="/bookingcar/createrouteorder" method="post">
-  <!-- <p>ste:{{session.loginid}}</p> -->
-
-    {% if !session.loginid %}
-      
-    {% endif %}
-
-    
     <select name="OwnerName" data-native-menu="false">
       <option>请选择一个车主</option>
       {% for owner in carOwner %}

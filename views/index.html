@@ -12,9 +12,6 @@
 {% set foo = { pagename: "显示所有行程" } %}
 {% block pageone_content %}
 
-
-<!-- 计算订单数量＝车主的订单数量的合 -->
-
 <p>现在已经有 <strong>{{ routeOrders.length }}</strong>行程 准备出发</p> 
 
 <h2>所有行程</h2>
@@ -29,10 +26,10 @@
               <p>
                 途经: {{ order.routePoint }}</br>
                 <a href="/bookingcar/routeorder/{{ order._id.toString() }}/{{ owner._id.toString() }}"> 查看详情</a>
-                <a href="/bookingcar/edit/{{ routeOrder._id.toString() }}"> 修改行程</a>
+                <a href="/bookingcar/routeorder/edit/{{ routeOrder._id.toString() }}"> 修改行程</a>
                 <a href="#popupdelete" data-rel="popup" data-position-to="window" data-transition="pop"> 删除行程</a>
                 <div data-role="popup" id="popupdelete" data-theme="a" class="ui-corner-all">
-                      <form action="/bookingcar/delete/{{ bookingcar._id.toString()}}">
+                      <form action="/bookingcar/delete/{{ routeOrder._id.toString()}}">
                             <div style="padding:10px 20px;">
                                   <h3>请输入管理员密码</h3>
                                   <label for="pw" class="ui-hidden-accessible">Password:</label>
@@ -53,7 +50,7 @@
 
 <!-- pagetwo的继承 -->
 {% block pagetwo_header %}
-<a href="/bookingcar/newowner" data-role="button" data-icon="plus" data-iconpos="notext"></a>
+<a href="/bookingcar/newcarowner" data-role="button" data-icon="plus" data-iconpos="notext"></a>
 {% endblock %}
 {% set x = { pagename: "显示所有车主" } %}
 {% block pagetwo_content %}
@@ -61,7 +58,7 @@
 <p>现在已经有 <strong>{{ carOwner.length }}</strong>车主已注册</p> 
 <h2>所有车主</h2>
 
-<ul data-role="listview" data-filter="true" data-inset="true" id="lista">
+<ul data-role="listview" data-filter="true" id="lista">
   
   {% for owner in carOwner %}
 
