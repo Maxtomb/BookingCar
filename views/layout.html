@@ -1,53 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>{% block title %}拼车顾客管理{% endblock %}</title>
-  <link rel="stylesheet" href="/layout.css">
-  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
-  <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-  <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
-  {% block script %}
-
-  {% endblock %}
-  
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<title>{% block title %}拼车顾客管理{% endblock %}</title>
+	<link rel="stylesheet" href="/layout.css">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 </head>
 <body class="ui-mobile-viewport ui-overlay-a">
-<div data-role="page">
-	<div data-role="header" data-position="fixed" style="position: absolute;padding:0;margin:0"> 
-		<a href="#defaultpanel" data-role="button" data-icon="bars" data-iconpos="notext">菜单</a>
-        <h1>拼车顾客管理</h1>
-        {% block retrunButton %}
 
-      	{% endblock %}
-    </div>
-    <div data-role="content" id="content" style="overflow: scroll;">
-	    
-			  {% block content %}
-			    <p>Missing content!</p>
-			  {% endblock %}
-	
-	</div> 
-    <div data-role="panel" id="defaultpanel" data-theme="b"> 
-       
-      <div class="panel-content"> 
+	<!-- pageone 用来当作主页面的的各种操作的跳转 -->
+	<div data-role="page" id="pageone" name="pageone" data-dom-cache＝"false">
+		<div data-role="header" data-position="fixed" style="padding:0;margin:0"> 
+			<!-- header页面会根据foo的值变化而动态变化 -->
+			{% include 'snippets/header.html' with foo %}
+			<!-- swig 语法用来负责子类继承 -->
+			{% block pageone_header %}{% endblock %}
+		</div>
+		<div data-role="content" id="pageone_content" style="overflow: scroll;">
+			<!-- swig 语法用来负责子类继承 -->
+			{% block pageone_content %}{% endblock %}
+		</div> 
+		<!-- swig 语法加入html标签碎片 主要为了使html标签重用 -->
+		{% include 'snippets/panel.html' %}
+		{% include 'snippets/footer.html' %}
+	</div>
+	<!-- pagetwo 主要负责点击panel 菜单后的页面跳转的初始化 -->
+	<div data-role="page" id="pagetwo" data-cache="false" name="pagetwo" data-dom-cache＝"false">
+		
+		<div data-role="header" data-position="fixed" style="padding:0;margin:0"> 
+			<!-- header页面会根据foo的值变化而动态变化 -->
+			{% include 'snippets/header.html' with x %}
+			
+			<!-- swig 语法用来负责子类继承 -->
+			{% block pagetwo_header %}{% endblock %}
+		</div>
+		<div data-role="content" id="pagetwo_content"  style="overflow: scroll;">
+			<!-- swig 语法用来负责子类继承 -->
+			{% block pagetwo_content %}{% endblock %}
+		</div> 
+		<!-- swig 语法加入html标签碎片 主要为了使html标签重用 -->
+		{% include 'snippets/panel.html'%}
+		{% include 'snippets/footer.html'%}
+	</div>
 
-      	<ul data-role="listview" data-icon="false">
-      		<li><a href="#demo-links" data-rel="close"> 关闭窗口</a></li>
-		    <li><a href="#">关于我们</a></li>
-		</ul>
-        
-      </div> 
-                    
-    </div>
-    <div data-role="footer" data-position="fixed" style="position: absolute;padding:0;margin:0"> 
-		<p>Created By: 小黑工作室</p>
-    </div>
-</div>
-	
-
-	
 </body>
 </html>

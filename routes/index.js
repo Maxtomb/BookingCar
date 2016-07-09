@@ -1,104 +1,169 @@
 var parse  = require('co-body');
 var render = require('../lib/views');
-var todos  = require('../models/todos');
+var carOwnerCollection = require('../models/CarOwner');
+var routeOrderCollection = require('../models/RouteOrder'); 
 
-// Route definitions
-
-
-
-exports.locate = function *(){
-  this.body = yield render('locate');
+/**
+ *  显示所有行程
+ */
+exports.listRouteOrder = function *() {
+  var carOwner = yield carOwnerCollection.find({});
+  var routeOrder = yield routeOrderCollection.find({});
+  this.body = yield render('index', {routeOrders: routeOrder, carOwner: carOwner});
 };
 
 
 /**
- * Item List.
+ * 跳转到增加车主页面
  */
-exports.list = function *() {
-  var results = yield todos.find({});
+exports.addCarOwner = function *() {
+  var results = yield carOwnerCollection.find({});
   console.log(results);
-  this.body = yield render('index', {todos: results});
+  this.body = yield render('newcarowner', {carOwner: results});
+};
+
+
+/**
+ * 跳转到增加行程页面
+ */
+exports.addRouteOrder = function *() {
+  var results = yield carOwnerCollection.find({});
+  console.log(results);
+  this.body = yield render('newrouteorder',{carOwner: results});
 };
 
 /**
- * Form for creating new todo item.
+ * 编辑行程信息
  */
-exports.add = function *() {
-  var ss = this.session;
-  this.body = yield render('new',{session: ss});
-};
-
-/**
- * Form for editing a todo item.
- */
-exports.edit = function *(id) {
-  var result = yield todos.findById(id);
+exports.editRouteOrder = function *(id) {
+  var result = yield routeOrderCollection.findById(id);
   console.log(JSON.stringify(result));
   if (!result) {
-    this.throw(404, 'invalid todo id');
+    this.throw(404, 'invalid bookingcar id');
   }
-  this.body = yield render('edit', {todo: result});
+  this.body = yield render('editrouteorder', {routeOrder: result});
 };
 
-exports.order = function *(id) {
-  var result = yield todos.findById(id);
+/**
+ * 编辑车主信息
+ */
+exports.editCarOwner = function *(id) {
+  var result = yield carOwnerCollection.findById(id);
   console.log(JSON.stringify(result));
   if (!result) {
-    this.throw(404, 'invalid todo id');
+    this.throw(404, 'invalid carOwner id');
   }
-  this.body = yield render('order', {todo: result});
+  this.body = yield render('editcarowner', {carOwner: result});
 };
 
+
 /**
- * Show details of a todo item.
+ *  跳转预约车辆页面
  */
-exports.show = function *(id) {
-  var result = yield todos.findById(id);
+exports.makeOrder = function *(id,carOwnerId) {
+  var result = yield routeOrderCollection.findById(id);
+  console.log(result);
   if (!result) {
-    this.throw(404, 'invalid todo id');
+    this.throw(404, 'invalid bookingcar id');
   }
-  this.body = yield render('show', {todo: result});
+  this.body = yield render('makeorder', {routeOrder: result,carOwnerId: carOwnerId});
 };
 
 /**
- * Delete a todo item
+ * 显示行程详细信息
  */
-exports.remove = function *(id) {
+exports.showRouteOrder = function *(id,ownerid) { 
+  var order =  yield routeOrderCollection.findById(id);
+  var owner = yield carOwnerCollection.findById(ownerid);
+  console.log(order);
+  console.log(owner);
+  if (!order) {
+    this.throw(404, 'invalid bookingcar id');
+  }
+  this.body = yield render('showrouteorder', {routeOrder: order,carOwner: owner});
+};
+
+/**
+ * 显示车主详细信息
+ */
+exports.showCarOwner = function *(id) { 
+  var owner = yield carOwnerCollection.findById(id);
+  console.log(owner);
+  if (!owner) {
+    this.throw(404, 'invalid bookingcar id');
+  }
+  this.body = yield render('showcarowner', {carOwner: owner});
+};
+
+/**
+ * 删除行程信息
+ */
+exports.deleteRouteOrder = function *(id) {
   var input = yield parse.form(this);
   console.log(input);
   var pwd = input.pass;
   if(pwd == "abc"){
-    yield todos.remove({"_id": id});
+    yield routeOrderCollection.remove({"_id": id});
   }
   this.redirect('/');
 };
 
 /**
- * Create a todo item in the data store
+ * 删除车主信息
  */
-exports.create = function *() {
+exports.deleteCarOwner = function *(id) {
+  var input = yield parse.form(this);
+  console.log(input);
+  yield carOwnerCollection.remove({"_id": id});
+  this.redirect('/');
+};
+
+/**
+ * 创建行程
+ */
+exports.createRouteOrder = function *() {
+  var input = yield parse(this);
+  console.dir(input);
+  var d = new Date();
+
+  var routeOrderObj = yield routeOrderCollection.insert({
+        setoffDate: input.SetoffDate,
+        setoffTime: input.SetoffTime,
+        destination: input.Destination,
+        routePoint: input.RoutePoint,
+        carSeatsCount: input.CarSeatsCount,
+        customer:[],
+        description: input.description,
+        created_on: d,
+        updated_on: d
+  });
+  var id = routeOrderObj._id.toString();
+  yield carOwnerCollection.updateById(input.OwnerName,{
+    $addToSet:{
+      routeOrder:{
+        "routeOrderId":id
+      }
+    }
+  });
+  this.redirect('/');
+};
+
+/**
+ * 创建车主
+ */
+exports.createCarOwner = function *() {
   var input = yield parse(this);
   console.log(input);
   var d = new Date();
-  yield todos.insert({
+  yield carOwnerCollection.insert({
     carOwnerName: input.CarOwnerName,
-    routePoint: input.RoutePoint,
     mobilePhone: input.MobilePhone,
-    setoffDate: input.SetoffDate,
-    setoffTime: input.SetoffTime,
-    destination: input.Destination,
-    setoffLocation: {
-      city: input.SetoffCity,
-      address: input.SetoffAddress
-    },
+    routeOrder:[],
     car:{
       carNumberPlate: input.CarNumberPlate,
       carName: input.CarName,
-      carColor: input.CarColor,
-      carSeatsCount: input.CarSeatsCount
+      carColor: input.CarColor
     },
-    customer:[],
-    description: input.description,
     isStandardUser: false,
     created_on: d,
     updated_on: d
@@ -106,12 +171,14 @@ exports.create = function *() {
   this.redirect('/');
 };
 
-
-exports.update = function *() {
+/**
+ * 更新行程
+ */
+exports.updateRouteOrder = function *() {
   var input = yield parse(this);
   console.log(input);
   var d = new Date();
-  yield todos.updateById(input.id, {
+  yield bookingcar.updateById(input.id, {
     carOwnerName: input.CarOwnerName,
     routePoint: input.RoutePoint,
     mobilePhone: input.MobilePhone,
@@ -138,12 +205,34 @@ exports.update = function *() {
 };
 
 /**
- * Update an existing todo item.
+ * 更新车主
+ */
+exports.updateCarOwner = function *() {
+  var input = yield parse(this);
+    var d = new Date();
+  console.log(JSON.stringify(input));
+ var result = yield carOwnerCollection.updateById(input.id, {$set:{
+      carOwnerName: input.CarOwnerName,
+      mobilePhone: input.MobilePhone,
+      car:{
+        carNumberPlate: input.CarNumberPlate,
+        carName: input.CarName,
+        carColor: input.CarColor
+      },
+      updated_on: d
+    }
+  });
+  console.log(result);
+  this.redirect('/');
+};
+
+/**
+ * 下订单信息 预约成功
  */
 exports.updateOrder = function *() {
   var input = yield parse(this);
   console.log(input);
-  yield todos.updateById(input.id, {
+  yield routeOrderCollection.updateById(input.id, {
     $addToSet:{
       customer:{
         customerName: input.CustomerName,
@@ -152,25 +241,10 @@ exports.updateOrder = function *() {
       }
     }
   });
-  this.redirect('/todo/'+input.id);
+  this.redirect('/bookingcar/routeorder/'+input.id+"/"+input.carOwnerId);
 };
 
-exports.updateCarOwnerJsonObject = function *() {
-  var input = yield parse(this);
-  console.log(input);
-  yield todos.updateById(input.id, {
-    name: input.name,
-    description: input.description,
-    created_on: new Date(input.created_on),
-    updated_on: new Date()});
-  this.redirect('/');
-};
 
-exports.offlineCache = function *(req, res){
-  console.log("is cacheing");
-  res.header("Content-Type", "text/cache-manifest");
-  res.end("CACHE MANIFEST");
-};
 
 
 

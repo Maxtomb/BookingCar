@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ carOwner.name }}{% endblock %}
+
+{% block pageone_header %}
+<a href="/" data-role="button" data-icon="back" data-iconpos="notext">返回</a>
+{% endblock %}
+
+{% block pageone_content %}
+  <div class="ui-grid-b" >
+      <div class="ui-block-a"><span><b>车主称呼:</b> {{ carOwner.carOwnerName }} </span></div>
+      <div class="ui-block-b"><span><b>车牌尾号:</b> {{ carOwner.car.carNumberPlate }}</span></div>
+  </div>
+  <div class="ui-grid-b" >
+      <div class="ui-block-a"><span><b>车    型:</b> {{ carOwner.car.carName }}</span></div>
+      <div class="ui-block-b"><span><b>车身颜色:</b> {{ carOwner.car.carColor }}</span></div>
+  </div></br>
+  <div class="ui-grid-b" >
+      <div class="ui-block-d"><span><b>电    话:</b> {{ carOwner.mobilePhone}}</span></div>
+  </div>
+{% endblock %}

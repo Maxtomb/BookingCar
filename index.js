@@ -18,7 +18,7 @@ app.use(stylus('./public'));
 app.use(serve('./public'));
 
 // Route middleware
-app.use(route.get('/', routes.list));
+app.use(route.get('/', routes.listRouteOrder));
 // app.use(route.get('/offline.manifest',route.offlineCache));
 app.use(function* (next){
   yield next;
@@ -27,15 +27,25 @@ app.use(function* (next){
   this.session.views = ++n;
   this.session.loginid = null;
 });
-app.use(route.get('/todo/new', routes.add));
-app.use(route.get('/todo/:id', routes.show));
-app.use(route.get('/todo/delete/:id', routes.remove));
-app.use(route.get('/todo/edit/:id', routes.edit));
-app.use(route.get('/todo/order/:id', routes.order));
-app.use(route.post('/todo/create', routes.create));
-app.use(route.post('/todo/update', routes.update));
-app.use(route.post('/todo/updateOrder', routes.updateOrder));
-app.use(route.get('/locate', routes.locate));
+//所有跳转增加页面的 path 使用new 开头, 对应的route 使用add 
+app.use(route.get('/bookingcar/newrouteorder', routes.addRouteOrder));
+app.use(route.get('/bookingcar/newcarowner', routes.addCarOwner));
+
+//所有的增加操作的path 使用 create 开头, 对应的route 使用create
+app.use(route.post('/bookingcar/createrouteorder', routes.createRouteOrder));
+app.use(route.post('/bookingcar/updaterouteorder', routes.updateRouteOrder));
+app.use(route.post('/bookingcar/createowner', routes.createCarOwner));
+app.use(route.post('/bookingcar/updateowner', routes.updateCarOwner));
+
+app.use(route.get('/bookingcar/routeorder/:id/:ownerid', routes.showRouteOrder));
+app.use(route.get('/bookingcar/routeorder/delete/:id/:ownerid', routes.deleteRouteOrder));
+app.use(route.get('/bookingcar/routeorder/edit/:id/:ownerid', routes.editRouteOrder));
+app.use(route.get('/bookingcar/carowner/:id', routes.showCarOwner));
+app.use(route.get('/bookingcar/carowner/delete/:id', routes.deleteCarOwner));
+app.use(route.get('/bookingcar/carowner/edit/:id', routes.editCarOwner));
+
+app.use(route.get('/bookingcar/order/:id/:carOwnerId', routes.makeOrder));
+app.use(route.post('/bookingcar/updateorder', routes.updateOrder));
 
 
 // Create HTTP Server

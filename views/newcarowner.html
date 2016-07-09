@@ -1,0 +1,20 @@
+
+
+{% extends 'layout.html' %}
+
+{% block title %}创建一个车主{% endblock %}
+
+{% block pageone_header %}
+<a href="/" data-role="button" data-icon="back" data-iconpos="notext">返回</a>
+{% endblock %}
+{% set foo = { pagename: "创建一个车主" } %}
+{% block pageone_content %}
+  <form action="/bookingcar/createowner" method="post">
+     <input type="text" placeholder="车主姓名" name="CarOwnerName" />
+     <input type="text" placeholder="车牌(车牌尾号)" name="CarNumberPlate" />
+     <input type="text" placeholder="车辆名称(例:标致508)" name="CarName" />
+     <input type="text" placeholder="车辆颜色" name="CarColor" />
+     <input type="text" placeholder="手机" name="MobilePhone" />
+     <input type="submit" value="创建" />
+  </form>
+{% endblock %}
