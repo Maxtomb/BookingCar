@@ -12,7 +12,6 @@ exports.listRouteOrder = function *() {
   this.body = yield render('index', {routeOrders: routeOrder, carOwner: carOwner});
 };
 
-
 /**
  * 跳转到增加车主页面
  */
@@ -115,7 +114,7 @@ exports.deleteCarOwner = function *(id) {
   var input = yield parse.form(this);
   console.log(input);
   yield carOwnerCollection.remove({"_id": id});
-  this.redirect('/');
+  this.redirect('/page');
 };
 
 /**
