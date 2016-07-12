@@ -5,12 +5,12 @@ var route    = require('koa-route');
 var routes   = require('./routes');
 var serve    = require('koa-static');
 var stylus   = require('koa-stylus');
-var session = require('koa-session');
+
 
 // Create koa app
 var app = koa();
 app.keys = ['some secret hurr'];
-app.use(session(app));
+
 
 // middleware
 app.use(logger());
@@ -18,15 +18,10 @@ app.use(stylus('./public'));
 app.use(serve('./public'));
 
 // Route middleware
-app.use(route.get('/', routes.listRouteOrder));
-// app.use(route.get('/offline.manifest',route.offlineCache));
-app.use(function* (next){
-  yield next;
-  if ('/favicon.ico' == this.path) return;
-  var n = this.session.views || 0;
-  this.session.views = ++n;
-  this.session.loginid = null;
-});
+app.use(route.get('/', routes.menu));
+app.use(route.get('/listrouteorder', routes.listRouteOrder));
+app.use(route.get('/listcarowner', routes.listCarOwner));
+
 //所有跳转增加页面的 path 使用new 开头, 对应的route 使用add 
 app.use(route.get('/bookingcar/newrouteorder', routes.addRouteOrder));
 app.use(route.get('/bookingcar/newcarowner', routes.addCarOwner));

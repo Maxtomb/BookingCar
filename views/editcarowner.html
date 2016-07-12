@@ -3,19 +3,21 @@
 {% block title %}行程信息修改{% endblock %}
 
 {% block pageone_header %}
-<a href="/" data-role="button" data-icon="back" data-iconpos="notext">返回</a>
+<a href="/">Home</a>
+<h1>修改车主信息</h1>
+<a href=""  data-rel="back">返回</a>
 {% endblock %}
 
 {% block pageone_content %}
 
-  <form action="/bookingcar/updateowner" method="post">
-   <input type="hidden" value="{{ carOwner._id.toString() }}" name="id" />
+<form action="/bookingcar/updateowner" method="post">
+ <input type="hidden" value="{{ carOwner._id.toString() }}" name="id" />
 
-   <input type="text" value="{{ carOwner.carOwnerName}}" placeholder="车主姓名" name="CarOwnerName" />
-   <input type="text" value="{{ carOwner.mobilePhone}}" placeholder="联系电话" name="MobilePhone" />
-   <input type="text" value="{{ carOwner.car.carNumberPlate}}" placeholder="车牌(车牌尾号)" name="CarNumberPlate" />
-   <input type="text" value="{{ carOwner.car.carName}}" placeholder="车辆名称(例:标致508)" name="CarName" />
-   <input type="text" value="{{ carOwner.car.carColor}}" placeholder="车辆颜色" name="CarColor" />
-   <input type="submit" id="btn" value="修改" />
-  </form>
+ <input type="text" value="{{ carOwner.carOwnerName}}" placeholder="车主姓名" name="CarOwnerName" />
+ <input type="text" value="{{ carOwner.mobilePhone}}" placeholder="联系电话" name="MobilePhone" />
+ <input type="text" value="{{ carOwner.car.carNumberPlate}}" placeholder="车牌(车牌尾号)" name="CarNumberPlate" />
+ <input type="text" value="{{ carOwner.car.carName}}" placeholder="车辆名称(例:标致508)" name="CarName" />
+ <input type="text" value="{{ carOwner.car.carColor}}" placeholder="车辆颜色" name="CarColor" />
+ <input type="submit" id="btn" value="修改" />
+</form>
 {% endblock %}
