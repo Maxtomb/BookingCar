@@ -3,16 +3,26 @@ var render = require('../lib/views');
 var carOwnerCollection = require('../models/CarOwner');
 var routeOrderCollection = require('../models/RouteOrder'); 
 
+
+exports.menu = function *() {
+  this.body = yield render('index');
+};
+
+
 /**
  *  显示所有行程
  */
 exports.listRouteOrder = function *() {
   var carOwner = yield carOwnerCollection.find({});
   var routeOrder = yield routeOrderCollection.find({});
-  this.body = yield render('index', {routeOrders: routeOrder, carOwner: carOwner});
+  this.body = yield render('listrouteorder', {routeOrders: routeOrder, carOwner: carOwner});
 };
 
-
+exports.listCarOwner = function *() {
+  var carOwner = yield carOwnerCollection.find({});
+  var routeOrder = yield routeOrderCollection.find({});
+  this.body = yield render('listcarowner', {routeOrders: routeOrder, carOwner: carOwner});
+};
 /**
  * 跳转到增加车主页面
  */
@@ -35,13 +45,13 @@ exports.addRouteOrder = function *() {
 /**
  * 编辑行程信息
  */
-exports.editRouteOrder = function *(id) {
-  var result = yield routeOrderCollection.findById(id);
-  console.log(JSON.stringify(result));
-  if (!result) {
-    this.throw(404, 'invalid bookingcar id');
+exports.editRouteOrder = function *(routeorderid,ownerid) {
+  var order = yield routeOrderCollection.findById(routeorderid);
+  var owner = yield carOwnerCollection.findById(ownerid);
+  if (!order) {
+    this.throw(404, 'invalid routeOrder id');
   }
-  this.body = yield render('editrouteorder', {routeOrder: result});
+  this.body = yield render('editrouteorder', {routeOrder: order,carOwner: owner});
 };
 
 /**
@@ -98,14 +108,15 @@ exports.showCarOwner = function *(id) {
 /**
  * 删除行程信息
  */
-exports.deleteRouteOrder = function *(id) {
-  var input = yield parse.form(this);
-  console.log(input);
-  var pwd = input.pass;
-  if(pwd == "abc"){
-    yield routeOrderCollection.remove({"_id": id});
-  }
-  this.redirect('/');
+exports.deleteRouteOrder = function *(routeorderid,carownerid) {
+
+  yield routeOrderCollection.remove({"_id": routeorderid});
+  yield carOwnerCollection.updateById(carownerid,{
+      $pull:{
+        routeOrder:{"routeOrderId":routeorderid}
+      }
+  });
+  this.redirect('/listrouteorder');
 };
 
 /**
@@ -115,7 +126,7 @@ exports.deleteCarOwner = function *(id) {
   var input = yield parse.form(this);
   console.log(input);
   yield carOwnerCollection.remove({"_id": id});
-  this.redirect('/');
+  this.redirect('/listcarowner');
 };
 
 /**
@@ -145,7 +156,7 @@ exports.createRouteOrder = function *() {
       }
     }
   });
-  this.redirect('/');
+  this.redirect('/listrouteorder');
 };
 
 /**
@@ -168,7 +179,7 @@ exports.createCarOwner = function *() {
     created_on: d,
     updated_on: d
   });
-  this.redirect('/');
+  this.redirect('/listcarowner');
 };
 
 /**
@@ -178,30 +189,16 @@ exports.updateRouteOrder = function *() {
   var input = yield parse(this);
   console.log(input);
   var d = new Date();
-  yield bookingcar.updateById(input.id, {
-    carOwnerName: input.CarOwnerName,
+  yield routeOrderCollection.updateById(input.id, {$set:{
     routePoint: input.RoutePoint,
     mobilePhone: input.MobilePhone,
     setoffDate: input.SetoffDate,
     setoffTime: input.SetoffTime,
     destination: input.Destination,
-    setoffLocation: {
-      city: input.SetoffCity,
-      address: input.SetoffAddress
-    },
-    car:{
-      carNumberPlate: input.CarNumberPlate,
-      carName: input.CarName,
-      carColor: input.CarColor,
-      carSeatsCount: input.CarSeatsCount
-    },
-    customer:[],
     description: input.description,
-    isStandardUser: false,
-    created_on: d,
     updated_on: d
-  });
-  this.redirect('/');
+  }});
+  this.redirect('/listRouteOrder');
 };
 
 /**
@@ -223,7 +220,7 @@ exports.updateCarOwner = function *() {
     }
   });
   console.log(result);
-  this.redirect('/');
+  this.redirect('/listcarowner');
 };
 
 /**

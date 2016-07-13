@@ -4,9 +4,12 @@
 
 
 {% block pageone_header %}
-<a href="/" data-role="button" data-icon="back" data-iconpos="notext">返回</a>
+<a href="/">Home</a>
+<h1>创建一个行程</h1>
+<a href=""  data-rel="back">返回</a>
+<!-- <a href="" data-role="button"  data-icon="back" data-iconpos="notext">返回</a> -->
 {% endblock %}
-{% set foo = { pagename: "创建一个行程" } %}
+
 {% block pageone_content %}
   <form action="/bookingcar/createrouteorder" method="post">
     <select name="OwnerName" data-native-menu="false">
