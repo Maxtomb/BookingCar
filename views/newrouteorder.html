@@ -8,66 +8,66 @@
 {% endblock %}
 
 {% block pageone_content %}
-  
-  <form action="/bookingcar/createrouteorder" method="post">
-    <select name="OwnerName" id="filter-menu" data-native-menu="false" class="filterable-select">
-      <option>请选择一个车主</option>
-      {% for owner in carOwner %}
+
+<form action="/bookingcar/createrouteorder" method="post">
+  <select name="OwnerName" id="filter-menu" data-native-menu="false" class="filterable-select">
+    <option>请选择一个车主</option>
+    {% for owner in carOwner %}
         <option value="{{ owner._id.toString() }}" name="option">{{ owner.carOwnerName }}</option>
-      {% endfor %}
-    </select>
-    <input type="text" placeholder="出发日期" onfocus="this.type='date';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffDate"/>
-    <input type="text" placeholder="出发时间" onfocus="this.type='time';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffTime" />
-    <input type="text" placeholder="终点" name="Destination" />
-    <textarea cols="40" placeholder="途径地点 例如: 软件园二期文思海辉大厦,数字山谷大厦(从一期西门入的第一个十字路口) 中间用逗号隔开" rows="8" name="RoutePoint"></textarea>
-    <input type="text" placeholder="空余座位" name="CarSeatsCount" value="4"/>
-    <input type="text" placeholder="备注" name="description" />
-    <input type="submit" value="创建" />
-  </form>
-  <script type="text/javascript">
-    ( function( $ ) {
-function pageIsSelectmenuDialog( page ) {
-    var isDialog = false,
-        id = page && page.attr( "id" );
-    $( ".filterable-select" ).each( function() {
-        if ( $( this ).attr( "id" ) + "-dialog" === id ) {
-            isDialog = true;
-            return false;
-        }
-    });
-    return isDialog;
-}
-$.mobile.document
+    {% endfor %}
+  </select>
+  <input type="text" placeholder="出发日期" onfocus="this.type='date';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffDate"/>
+  <input type="text" placeholder="出发时间" onfocus="this.type='time';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffTime" />
+  <input type="text" placeholder="终点" name="Destination" />
+  <textarea cols="40" placeholder="途径地点 例如: 软件园二期文思海辉大厦,数字山谷大厦(从一期西门入的第一个十字路口) 中间用逗号隔开" rows="8" name="RoutePoint" onkeyup="javascript:this.value=this.value.replace(/，/ig,',');"></textarea>
+  <input type="text" placeholder="空余座位" name="CarSeatsCount" value="4"/>
+  <input type="text" placeholder="备注" name="description" />
+  <input type="submit" value="创建" />
+</form>
+<script type="text/javascript">
+  ( function( $ ) {
+    function pageIsSelectmenuDialog( page ) {
+          var isDialog = false,
+              id = page && page.attr( "id" );
+          $( ".filterable-select" ).each( function() {
+                if ( $( this ).attr( "id" ) + "-dialog" === id ) {
+                      isDialog = true;
+                      return false;
+                }
+          });
+          return isDialog;
+    }
+    $.mobile.document
     // Upon creation of the select menu, we want to make use of the fact that the ID of the
     // listview it generates starts with the ID of the select menu itself, plus the suffix "-menu".
     // We retrieve the listview and insert a search input before it.
     .on( "selectmenucreate", ".filterable-select", function( event ) {
-        var input,
-            selectmenu = $( event.target ),
-            list = $( "#" + selectmenu.attr( "id" ) + "-menu" ),
-            form = list.jqmData( "filter-form" );
+          var input,
+              selectmenu = $( event.target ),
+              list = $( "#" + selectmenu.attr( "id" ) + "-menu" ),
+              form = list.jqmData( "filter-form" );
         // We store the generated form in a variable attached to the popup so we avoid creating a
         // second form/input field when the listview is destroyed/rebuilt during a refresh.
         if ( !form ) {
-            input = $( "<input data-type='search'></input>" );
-            form = $( "<form></form>" ).append( input );
-            input.textinput();
-            list
-                .before( form )
-                .jqmData( "filter-form", form ) ;
-            form.jqmData( "listview", list );
+              input = $( "<input data-type='search'></input>" );
+              form = $( "<form></form>" ).append( input );
+              input.textinput();
+              list
+                  .before( form )
+                  .jqmData( "filter-form", form ) ;
+              form.jqmData( "listview", list );
         }
         // Instantiate a filterable widget on the newly created selectmenu widget and indicate that
         // the generated input form element is to be used for the filtering.
         selectmenu
             .filterable({
-                input: input,
-                children: "> option[value]"
+                  input: input,
+                  children: "> option[value]"
             })
             // Rebuild the custom select menu's list items to reflect the results of the filtering
             // done on the select menu.
             .on( "filterablefilter", function() {
-                selectmenu.selectmenu( "refresh" );
+                  selectmenu.selectmenu( "refresh" );
             });
     })
     // The custom select list may show up as either a popup or a dialog, depending on how much
@@ -75,10 +75,10 @@ $.mobile.document
     // the filter input field must be transferred to the dialog so that the user can continue to
     // use it for filtering list items.
     .on( "pagecontainerbeforeshow", function( event, data ) {
-        var listview, form;
+          var listview, form;
         // We only handle the appearance of a dialog generated by a filterable selectmenu
         if ( !pageIsSelectmenuDialog( data.toPage ) ) {
-            return;
+              return;
         }
         listview = data.toPage.find( "ul" );
         form = listview.jqmData( "filter-form" );
@@ -91,10 +91,10 @@ $.mobile.document
     })
     // After the dialog is closed, the form containing the filter input is returned to the popup.
     .on( "pagecontainerhide", function( event, data ) {
-        var listview, form;
+          var listview, form;
         // We only handle the disappearance of a dialog generated by a filterable selectmenu
         if ( !pageIsSelectmenuDialog( data.toPage ) ) {
-            return;
+              return;
         }
         listview = data.prevPage.jqmData( "listview" ),
         form = listview.jqmData( "filter-form" );
@@ -102,6 +102,6 @@ $.mobile.document
         listview.before( form );
     });
 })( jQuery );
-    
-  </script>
+
+</script>
 {% endblock %}
