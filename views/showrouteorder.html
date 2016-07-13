@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block pageone_content %}
-
+  
   <div class="ui-grid-b" >
       <div class="ui-block-a"><span><b>车主称呼:</b> {{ carOwner.carOwnerName }} </span></div>
       <div class="ui-block-b"><span><b>车牌尾号:</b> {{ carOwner.car.carNumberPlate }}</span></div>
@@ -18,11 +18,11 @@
       <div class="ui-block-b"><span><b>车身颜色:</b> {{ carOwner.car.carColor }}</span></div>
   </div></br>
   <div class="ui-grid-b" >
-      <div class="ui-block-d"><span><b>电    话:</b> {{ carOwner.mobilePhone}}</span></div>
+      <div class="ui-block-a"><span><b>电    话:</b> {{ carOwner.mobilePhone}}</span></div>
       <div class="ui-block-b"><span><b>剩余座位:</b>{{ routeOrder.carSeatsCount - routeOrder.customer.length }}</span></div>
   </div>
   <div class="ui-grid-b" >
-      <div class="ui-block-d"><span><b>出行日期:</b> {{ routeOrder.setoffDate }}</span></div>
+      <div class="ui-block-a"><span><b>出行日期:</b> {{ routeOrder.setoffDate }}</span></div>
       <div class="ui-block-b"><span><b>终点:</b> {{ routeOrder.destination }}</span></div>
   </div>
   <p><b>出发时间:</b> {{ routeOrder.setoffTime }}</p>
