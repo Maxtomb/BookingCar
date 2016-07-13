@@ -40,7 +40,7 @@
   <p><b>备    注:</b> {{ routeOrder.description}}</p>
 
   {% if routeOrder.carSeatsCount - routeOrder.customer.length > 0 %}
-  	<p><a href="/bookingcar/order/{{ routeOrder._id.toString() }}/{{ carOwner._id.toString() }}" data-role="button">预 定</a></p> 
+     	<p><a href="/bookingcar/order/{{ routeOrder._id.toString() }}/{{ carOwner._id.toString() }}" data-role="button">预 定</a></p> 
   {% endif %}
   <table data-role="table" id="table-column-toggle" data-mode="columntoggle" border="10" class="ui-responsive table-stroke">
      <thead>
@@ -60,7 +60,7 @@
 	   {% endfor %}
      </tbody>
    </table>
-
+  </br>
   <p><em>Created On: </i> {{ routeOrder.created_on.toDateString() }}</p>
   <p><i>Last Updated On: </i> {{ routeOrder.updated_on.toDateString() }}</p>
 {% endblock %}

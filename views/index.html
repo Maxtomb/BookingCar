@@ -5,8 +5,20 @@
 {% endblock %}
 
 {% block pageone_content %}
+<div style="padding:0px margin:0px">
 <ul data-role="listview">
-      <li><a href="/listrouteorder"  data-transition="slide" >显示所有行程</a></li>
-      <li><a href="/listcarowner"  data-transition="slide"  >显示所有车主</a></li>
+      <li>
+        <a href="/listrouteorder"  data-transition="slide" >
+          <h2>行程管理</h2>
+          <p>显示所有行程</p>
+        </a>
+      </li>
+      <li>
+        <a href="/listcarowner"  data-transition="slide" >
+          <h2>车主管理</h2>
+          <p>显示所有车主</p>
+        </a>
+      </li>
 </ul>
+</div>
 {% endblock %}
