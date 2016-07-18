@@ -2,9 +2,8 @@
 
 
 {% block pageone_header %}
-<a href="/">Home</a>
+<a href="/" target=“_top”>Home</a>
 <h1>显示所有行程</h1>
-<a href="/bookingcar/newrouteorder" data-role="button" data-icon="plus" data-iconpos="notext"></a>
 {% endblock %}
 
 {% block pageone_content %}
@@ -21,8 +20,10 @@
               <p>
                 途经: {{ order.routePoint }}</br>
                 <a href="/bookingcar/routeorder/{{ order._id.toString() }}/{{ owner._id.toString() }}"> 查看详情</a>
-                <!-- <a href="/bookingcar/routeorder/edit/{{ order._id.toString() }}/{{ owner._id.toString() }}"> 修改行程</a> -->
-                <!-- <a href="/bookingcar/routeorder/delete/{{ order._id.toString() }}/{{ owner._id.toString() }}"> 删除行程</a> -->
+                {% if isAdmin %}
+                <a href="/bookingcar/routeorder/edit/{{ order._id.toString() }}/{{ owner._id.toString() }}"> 修改行程</a>
+                <a href="/bookingcar/routeorder/delete/{{ order._id.toString() }}/{{ owner._id.toString() }}"> 删除行程</a>
+                {% endif %}
               </p>
             </div>
           {% endif %}

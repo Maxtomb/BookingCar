@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block pageone_header %}
+<a href="" style="display:none" ></a>
+<h1 style="display:none">登陆</h1>
+<h1></h1>
+<a href=""  data-rel="back">返回</a>
+{% endblock %}
+
+{% block pageone_content %}
+ <form action="/login" method="post">
+  <p><b>手机:</b><input type="text" name="MobilePhone" id="MobilePhone"></p>
+  <p><b>密码:</b><input type="password" name="Password" id="Password"></p>
+  <p><input type="submit" value="登陆"></p> 
+  <a href="/registerpage" data-role="button">注册</a>
+</form>
+{% endblock %}

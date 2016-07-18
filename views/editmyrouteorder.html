@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block pageone_header %}
+<a href="/">Home</a>
+<h1>修改行程信息</h1>
+<a href=""  data-rel="back">返回</a>
+{% endblock %}
+
+{% block pageone_content %}
+<!-- <p><font color="#FF0000">注意: 修改行程会取消所有订单,修改行程前请先通知乘客</font></p> -->
+<form action="/bookingcar/updatemyrouteorder" method="post">
+ <input type="hidden" value="{{ routeOrder._id.toString() }}" name="id">
+ <!-- <input type="text" value="{{ carOwner.mobilePhone}}" placeholder="手机" name="MobilePhone" /> -->
+ <input type="text" value="{{ routeOrder.setoffDate }}" placeholder="出发日期" onfocus="this.type='date';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffDate"/>
+ <input type="text" value="{{ routeOrder.setoffTime }}" placeholder="出发时间" onfocus="this.type='time';this.setAttribute('onfocus','');this.blur();this.focus();" name="SetoffTime" />
+ <input type="text" value="{{ routeOrder.destination}}" placeholder="终点" name="Destination" />
+ <textarea cols="40" rows="5" name="RoutePoint">{{ routeOrder.routePoint}}</textarea>
+ <input type="text" value="{{ routeOrder.carSeatsCount}}" placeholder="空余座位" name="CarSeatsCount" value="4"/>
+ <input type="text" value="{{ routeOrder.description}}" placeholder="备注" name="description" />
+ <input type="submit" value="修改" />
+</form>
+{% endblock %}

@@ -7,25 +7,26 @@
 {% endblock %}
 
 {% block pageone_content %}
+{% if isAdmin %}
+  <p>现在已经有 <strong>{{ carOwner.length }}</strong>车主已注册</p> 
+  <h2>所有车主</h2>
+  <ul data-role="listview" data-filter="true">
+    
+    {% for owner in carOwner %}
 
-<p>现在已经有 <strong>{{ carOwner.length }}</strong>车主已注册</p> 
-<h2>所有车主</h2>
+      <div data-role="collapsible" style="margin:0;padding:0">
+        <h1>{{ owner.carOwnerName }}</h1>
+        <p>
+          <a href="/bookingcar/carowner/{{ owner._id.toString() }}"> 查看详情</a>
+          <a href="/bookingcar/carowner/edit/{{ owner._id.toString() }}"> 修改信息</a>
+          <a href="/bookingcar/carowner/delete/{{ owner._id.toString() }}"> 删除信息</a>
 
-<ul data-role="listview" data-filter="true">
-  
-  {% for owner in carOwner %}
-
-    <div data-role="collapsible" style="margin:0;padding:0">
-      <h1>{{ owner.carOwnerName }}</h1>
-      <p>
-        <a href="/bookingcar/carowner/{{ owner._id.toString() }}"> 查看详情</a>
-        <!-- <a href="/bookingcar/carowner/edit/{{ owner._id.toString() }}"> 修改信息</a> -->
-        <!-- <a href="/bookingcar/carowner/delete/{{ owner._id.toString() }}"> 删除信息</a> -->
-      </p>
-    </div>
-  
-  {% endfor %}
-
-</ul>
+        </p>
+      </div>
+    {% endfor %}
+  </ul>
+{% else %}
+  <h2> 请管理员登陆 </h2>
+{% endif%}
 
 {% endblock %}
