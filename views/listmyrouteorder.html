@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+
+{% block pageone_header %}
+<a href="/">Home</a>
+<h1>显示我的行程</h1>
+<a href="/bookingcar/newmyrouteorder/{{ carOwner._id.toString() }}" data-role="button" data-icon="plus" data-iconpos="notext"></a>
+{% endblock %}
+
+{% block pageone_content %}
+<p>现在您已经有 <strong>{{ routeOrders.length }}</strong>行程</p> 
+<h2>所有行程</h2>
+<ul data-role="listview" data-filter="true" data-inset="true">
+      {% for order in routeOrders %}
+            <div data-role="collapsible" style="margin:0;padding:0">
+              <h1>{{ carOwner.carOwnerName }} 终点:{{ order.destination }}</h1>
+              <p>
+                途经: {{ order.routePoint }}</br>
+                <a href="/bookingcar/myrouteorder/{{ order._id.toString() }}/{{ carOwner._id.toString() }}"> 查看详情</a>
+                <a href="/bookingcar/myrouteorder/edit/{{ order._id.toString() }}/{{ carOwner._id.toString() }}"> 修改行程</a>
+                <a href="/bookingcar/myrouteorder/delete/{{ order._id.toString() }}/{{ carOwner._id.toString() }}"> 删除行程</a>
+              </p>
+            </div>
+      {% endfor %}
+
+</ul>
+{% endblock %}

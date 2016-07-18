@@ -1,25 +1,50 @@
 {% extends 'layout.html' %}
 
 {% block pageone_header %}
+<a href="" style="display:none"></a>
 <h1 style="display:none">拼车顾客管理系统</h1>
 <h1></h1>
+
+{% if isLogin %}
+   <a href="/bookingcar/carowner/edit/{{ carOwner._id.toString() }}" data-role="button" data-icon="user" data-iconpos="notext"></a>
+{% else %}
+  <a href="/loginpage" data-role="button" data-icon="gear" data-iconpos="notext"></a>
+{% endif %}
 {% endblock %}
 
 {% block pageone_content %}
 <div style="padding:0px margin:0px">
 <ul data-role="listview">
+      {% if not isAdmin%}
       <li>
         <a href="/listrouteorder"  data-transition="slide" >
-          <h2>行程管理</h2>
+          <h2>查看行程</h2>
           <p>显示所有行程</p>
         </a>
       </li>
-      <li>
-        <a href="/listcarowner"  data-transition="slide" >
-          <h2>车主管理</h2>
-          <p>显示所有车主</p>
-        </a>
-      </li>
+      {% endif %}
+      {% if isLogin and isAdmin %}
+        <li>
+          <a href="/listrouteorder"  data-transition="slide" >
+            <h2>行程管理</h2>
+            <p>显示所有行程</p>
+          </a>
+        </li>
+        <li>
+          <a href="/listcarowner"  data-transition="slide" >
+            <h2>车主管理</h2>
+            <p>显示所有车主</p>
+          </a>
+        </li>
+      {% endif %}
+      {% if isLogin and not isAdmin %}
+        <li>
+          <a href="/listmyrouteorder/{{ carOwner._id.toString() }}"  data-transition="slide" >
+            <h2>我的行程</h2>
+            <p>显示我的行程</p>
+          </a>
+        </li>
+      {% endif %}
 </ul>
 </div>
 {% endblock %}

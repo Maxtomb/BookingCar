@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+
+{% block pageone_header %}
+<a href="/">Home</a>
+<h1>显示行程详情</h1>
+<a href=""  data-rel="back">返回</a>
+<!-- <a href="" data-role="button"  data-icon="back" data-iconpos="notext">返回</a> -->
+{% endblock %}
+
+{% block pageone_content %}
+  
+  <div class="ui-grid-b" >
+      <div class="ui-block-a"><span><b>车主称呼:</b> {{ carOwner.carOwnerName }} </span></div>
+      <div class="ui-block-b"><span><b>车牌尾号:</b> {{ carOwner.car.carNumberPlate }}</span></div>
+  </div>
+  <div class="ui-grid-b" >
+      <div class="ui-block-a"><span><b>车    型:</b> {{ carOwner.car.carName }}</span></div>
+      <div class="ui-block-b"><span><b>车身颜色:</b> {{ carOwner.car.carColor }}</span></div>
+  </div></br>
+  <div class="ui-grid-b" >
+      <div class="ui-block-a"><span><b>电    话:</b> {{ carOwner.mobilePhone}}</span></div>
+      <div class="ui-block-b"><span><b>剩余座位:</b>{{ routeOrder.carSeatsCount - routeOrder.customer.length }}</span></div>
+  </div>
+  <div class="ui-grid-b" >
+      <div class="ui-block-a"><span><b>出行日期:</b> {{ routeOrder.setoffDate }}</span></div>
+      <div class="ui-block-b"><span><b>终点:</b> {{ routeOrder.destination }}</span></div>
+  </div>
+  <p><b>出发时间:</b> {{ routeOrder.setoffTime }}</p>
+
+   <div data-role="collapsible">
+    <h1>行程路线:</h1>
+    <p>
+      {{ routeOrder.routePoint | replace(',','</br>','g')|safe}}
+    </p>
+   </div>
+
+
+  <p><b>备    注:</b> {{ routeOrder.description}}</p>
+
+  {% if routeOrder.carSeatsCount - routeOrder.customer.length > 0 %}
+     	<!-- <p><a href="/bookingcar/order/{{ routeOrder._id.toString() }}/{{ carOwner._id.toString() }}" data-role="button">预 定</a></p>  -->
+  {% endif %}
+  <table data-role="table" id="table-column-toggle" data-mode="columntoggle" border="10" class="ui-responsive table-stroke">
+     <thead>
+       <tr>
+         <th data-priority="1">顾客称呼</th>
+         <th data-priority="2">顾客电话</th>
+         <th data-priority="3">等车地点</th>
+         <th data-priority="4">操作</th>
+       </tr>
+     </thead>
+     <tbody>
+	   {% for customerObj in routeOrder.customer %}
+	       <tr>
+	         <td>{{ customerObj.customerName }}</td>
+	         <td>{{ customerObj.customerPhoneNumber }}</td>
+	         <td>{{ customerObj.customerLocation }}</td>
+           <td><a href="/cancelorder/{{ routeOrder._id.toString() }}/{{ customerObj.customerPhoneNumber }}/{{ routeOrder._id.toString() }}/{{ carOwner._id.toString() }}">取消订单</a></td>
+	       </tr>
+	   {% endfor %}
+     </tbody>
+   </table>
+  </br>
+  <p><em>Created On: </i> {{ routeOrder.created_on.toDateString() }}</p>
+  <p><i>Last Updated On: </i> {{ routeOrder.updated_on.toDateString() }}</p>
+{% endblock %}
