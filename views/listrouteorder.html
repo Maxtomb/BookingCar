@@ -9,7 +9,7 @@
 {% block pageone_content %}
 <p>现在已经有 <strong>{{ routeOrders.length }}</strong>行程 准备出发</p> 
 <h2>所有行程</h2>
-<ul data-role="listview" data-filter="true" data-inset="true">
+<ul data-role="listview" data-filter="true">
 {% for owner in carOwner %}
   {% for orderid in owner.routeOrder %}
       {% for order in routeOrders %}
@@ -24,6 +24,12 @@
                 <a href="/bookingcar/routeorder/edit/{{ order._id.toString() }}/{{ owner._id.toString() }}"> 修改行程</a>
                 <a href="/bookingcar/routeorder/delete/{{ order._id.toString() }}/{{ owner._id.toString() }}"> 删除行程</a>
                 {% endif %}
+                <!-- <div class="bdsharebuttonbox" class="bdshare_t bds_tools get-codes-bdshare">
+                  <a href="#" class="bds_copy"  title="复制网址" data-value='copy'></a>
+                  <a href="#" class="bds_sqq" data-cmd="tqq" title="发送给QQ好友"></a>
+                  <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                </div> -->
+                <textarea readonly onclick="this.setSelectionRange(0, 9999);" style="word-wrap: break-word;" id="ad">车找人，{{ order.setoffTime }} {{ order.routePoint|first }}出发,终点到 {{ order.destination }} 电话 {{ owner.mobilePhone }} 预定连接 http://120.27.40.95/bookingcar/routeorder/{{ order._id.toString() }}/{{ owner._id.toString() }}</textarea>
               </p>
             </div>
           {% endif %}
@@ -32,3 +38,61 @@
 {% endfor %}
 </ul>
 {% endblock %}
+
+{% block share %}
+<script>
+  window._bd_share_config={
+    "common":{
+      "bdSnsKey":{},
+      "bdText":"",
+      "bdMini":"1",
+      "bdText": 'test',
+      "bdMiniList":["weixin","sqq"],
+      "bdPic":"",
+      "bdStyle":"1",
+      "bdSize":"32"
+    },
+    "share":{}
+  };
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+
+  function copyToClipboard(txt) {
+            if (window.clipboardData) {
+                window.clipboardData.clearData();
+                clipboardData.setData("Text", txt);
+                alert("复制成功！");
+
+            } else if (navigator.userAgent.indexOf("Opera") != -1) {
+                window.location = txt;
+            } else if (window.netscape) {
+                try {
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                } catch (e) {
+                    alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将 'signed.applets.codebase_principal_support'设置为'true'");
+                }
+                var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
+                if (!clip)
+                    return;
+                var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
+                if (!trans)
+                    return;
+                trans.addDataFlavor("text/unicode");
+                var str = new Object();
+                var len = new Object();
+                var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+                var copytext = txt;
+                str.data = copytext;
+                trans.setTransferData("text/unicode", str, copytext.length * 2);
+                var clipid = Components.interfaces.nsIClipboard;
+                if (!clip)
+                    return false;
+                clip.setData(trans, null, clipid.kGlobalClipboard);
+                alert("复制成功！");
+            }
+        }
+</script>
+
+
+
+{% endblock %}
+

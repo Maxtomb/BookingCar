@@ -9,8 +9,6 @@
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-
-	</script>
 	<style type="text/css">
 		.ui-selectmenu.ui-popup .ui-input-search {
 		    margin-left: .5em;
@@ -31,6 +29,11 @@
 		    border-bottom-width: 1px;
 		}
 	</style>
+	<script type="text/javascript">
+		  
+		    
+	</script>
+
 </head>
 <body class="ui-mobile-viewport ui-overlay-a">
 
@@ -48,7 +51,9 @@
 		{% include 'snippets/footer.html' %}
 	</div>
 	<!-- pagetwo 主要负责点击panel 菜单后的页面跳转的初始化 -->
+	{% block share %}
 
+	{% endblock %}
 
 </body>
 </html>
