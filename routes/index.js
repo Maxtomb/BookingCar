@@ -5,31 +5,37 @@ var routeOrderCollection = require('../models/RouteOrder');
 var jwt = require('jwt-simple');
 
 exports.authcheck = function(token){
-  var decoded = jwt.decode(token,'xiaohei');
-  var arr = decoded.split('x,%');
-  if(arr.length==2){
-    return true;
+  if(token!=null){
+    var decoded = jwt.decode(token,'xiaohei');
+    var arr = decoded.split('x,%');
+    if(arr.length==2){
+      return true;
+    }else{
+      return false;
+    }
   }else{
     return false;
   }
-
 }
+
+
 exports.menu = function *() {
-  console.log("log: islogin="+this.session.isLogin);
   var isLogin = this.session.isLogin;
   var carOwner = this.session.carOwner;
   var isAdmin = this.session.isAdmin;
-  console.log(this.session.carOwner);
   this.body = yield render('index',{isLogin:isLogin,isAdmin:isAdmin,carOwner:carOwner});
 };
+
 
 exports.loginpage = function *() {
   this.body = yield render('login');
 };
 
+
 exports.registerpage = function *() {
   this.body = yield render('register');
 };
+
 
 exports.register = function *() {
   var input = yield parse(this);
@@ -77,14 +83,12 @@ exports.login = function *() {
     this.session.auth=token;
     this.session.isLogin = true;
     this.session.carOwner = result;
-    console.log("log: isAdmin = "+this.session.isAdmin);
     this.body = yield render('index',{isLogin:this.session.isLogin,isAdmin:this.session.isAdmin,carOwner:this.session.carOwner});
   }else{
     this.body = yield render('message',{message:'密码不对。'});
   }
   
 };
-
 
 
 exports.logout = function *() {
@@ -109,6 +113,7 @@ exports.listRouteOrder = function *() {
   this.body = yield render('listrouteorder', {routeOrders: routeOrder,isAdmin:this.session.isAdmin,carOwner: carOwner});
 };
 
+
 exports.listCarOwner = function *() {
   if(this.session.isAdmin){
     var carOwner = yield carOwnerCollection.find({});
@@ -118,6 +123,7 @@ exports.listCarOwner = function *() {
     this.body = yield render('message',{message:'您没有管理权限，请先登陆管理员'});
   }
 };
+
 
 exports.listMyRouteOrder = function *(id) {
   var carOwner = yield carOwnerCollection.findById(id);
@@ -186,8 +192,6 @@ exports.editMyRouteOrder = function *(routeorderid,ownerid) {
   this.body = yield render('editmyrouteorder', {routeOrder: order,carOwner: owner});
 };
 
-
-
 /**
  * 编辑，显示用户信息 所有的注册车主都需要用
  */
@@ -199,7 +203,6 @@ exports.editCarOwner = function *(id) {
     }
     this.body = yield render('editcarowner', {carOwner: result});
 };
-
 
 /**
  *  跳转预约车辆页面

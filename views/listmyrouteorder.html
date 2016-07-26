@@ -2,7 +2,7 @@
 
 
 {% block pageone_header %}
-<a href="/">Home</a>
+<a href="/" target="_top">Home</a>
 <h1>显示我的行程</h1>
 <a href="/bookingcar/newmyrouteorder/{{ carOwner._id.toString() }}" data-role="button" data-icon="plus" data-iconpos="notext"></a>
 {% endblock %}
@@ -11,6 +11,7 @@
 <p>现在您已经有 <strong>{{ routeOrders.length }}</strong>行程</p> 
 <h2>所有行程</h2>
 <ul data-role="listview" data-filter="true" data-inset="true">
+<div data-role="collapsibleset" data-inset="false">
       {% for order in routeOrders %}
             <div data-role="collapsible" style="margin:0;padding:0">
               <h1>{{ carOwner.carOwnerName }} 终点:{{ order.destination }}</h1>
@@ -22,6 +23,6 @@
               </p>
             </div>
       {% endfor %}
-
+</div>
 </ul>
 {% endblock %}

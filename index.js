@@ -41,7 +41,6 @@ app.use(route.post('/bookingcar/updateorder', routes.updateOrder));
 // 拦截器 拦截所有得请求 如果符合要求 则才能继续访问它下面的资源连接
 app.use(function *(next){
 	if(this.session.auth!=''||this.session.auth!=null){
-		console.log(this.session.auth);
 		if(routes.authcheck(this.session.auth)){
 			yield next;
 		}else{
@@ -96,12 +95,6 @@ app.use(route.post('/bookingcar/createowner', routes.createCarOwner));
 
 //所有的增加操作的path 使用 create 开头, 对应的route 使用create
 // app.use(route.post('/bookingcar/createrouteorder', routes.createRouteOrder));
-
-
-
-
-
-
 
 app.use(route.get('/bookingcar/carowner/:id', routes.showCarOwner));
 app.use(route.get('/bookingcar/carowner/delete/:id', routes.deleteCarOwner));

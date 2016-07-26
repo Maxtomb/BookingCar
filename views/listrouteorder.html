@@ -2,20 +2,22 @@
 
 
 {% block pageone_header %}
-<a href="/" target=“_top”>Home</a>
+<a href="/" target="_top">Home</a>
 <h1>显示所有行程</h1>
 {% endblock %}
 
 {% block pageone_content %}
 <p>现在已经有 <strong>{{ routeOrders.length }}</strong>行程 准备出发</p> 
 <h2>所有行程</h2>
+
 <ul data-role="listview" data-filter="true">
+<div data-role="collapsibleset" data-inset="false">
 {% for owner in carOwner %}
   {% for orderid in owner.routeOrder %}
       {% for order in routeOrders %}
           {% if orderid.routeOrderId == order._id.toString() %}
+          
             <div data-role="collapsible" style="margin:0;padding:0">
-      
               <h1>{{ owner.carOwnerName }} 终点:{{ order.destination }}</h1>
               <p>
                 途经: {{ order.routePoint }}</br>
@@ -28,11 +30,14 @@
                 <textarea readonly onclick="this.setSelectionRange(0, 9999);" style="word-wrap: break-word;" id="ad">车找人，{{ order.setoffTime }} {{ order.routePoint|first }}出发,终点到 {{ order.destination }} 电话 {{ owner.mobilePhone }} 预定连接 http://120.27.40.95/bookingcar/routeorder/{{ order._id.toString() }}/{{ owner._id.toString() }}</textarea>
               </p>
             </div>
+          
           {% endif %}
       {% endfor %}
   {% endfor %}
 {% endfor %}
+</div>
 </ul>
+
 {% endblock %}
 
 {% block share %}
